@@ -13,6 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "hotel_expenses")
@@ -23,8 +24,10 @@ public class HotelExpense {
     Long id;
     @NonNull
     Date created_date;
+    @NonNull
     @OneToOne
     ExpenseType expenseType;
+    @NonNull
     @ManyToOne
     Hotel hotel;
     @NonNull

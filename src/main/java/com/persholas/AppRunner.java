@@ -1,14 +1,8 @@
 package com.persholas;
 
 
-import com.persholas.dao.ICustomerRepo;
-import com.persholas.dao.IEmployeeRepo;
-import com.persholas.dao.IHotelRepo;
-import com.persholas.dao.IRoomRepo;
-import com.persholas.models.Customer;
-import com.persholas.models.Employee;
-import com.persholas.models.Hotel;
-import com.persholas.models.Room;
+import com.persholas.dao.*;
+import com.persholas.models.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -26,14 +22,19 @@ public class AppRunner implements CommandLineRunner {
     ICustomerRepo customerRepo;
     IHotelRepo hotelRepo;
     IRoomRepo roomRepo;
+    IHotelExpenseRepo hotelExpenseRepo;
+    IExpenseTypeRepo expenseTypeRepo;
 
     @Autowired
-    public AppRunner(IEmployeeRepo employeeRepo, IHotelRepo hotelRepo, ICustomerRepo customerRepo, IRoomRepo roomRepo)
+    public AppRunner(IEmployeeRepo employeeRepo, IHotelRepo hotelRepo, ICustomerRepo customerRepo, IRoomRepo roomRepo
+    ,IHotelExpenseRepo hotelExpenseRepo, IExpenseTypeRepo expenseTypeRepo)
     {
         this.employeeRepo = employeeRepo;
         this.hotelRepo = hotelRepo;
         this.customerRepo = customerRepo;
-        this.roomRepo = roomRepo;;
+        this.roomRepo = roomRepo;
+        this.hotelExpenseRepo = hotelExpenseRepo;
+        this.expenseTypeRepo = expenseTypeRepo;
     }
 
     @Override
@@ -54,19 +55,45 @@ public class AppRunner implements CommandLineRunner {
         maintenance_one.setEmp_manager(manager);
         maintenance_two.setEmp_manager(manager);
         maintenance_three.setEmp_manager(manager);
+
+        List<Employee> hEmps = new ArrayList<>();
+        hEmps.add(landlord);
+        hEmps.add(manager);
+        hEmps.add(maintenance_one);
+        hEmps.add(maintenance_two);
+        hEmps.add(maintenance_three);
+        //hotel creation
+        hotelRepo.save(new Hotel("north","9999 ave","AZ","98879"));
+        Hotel nHotel = hotelRepo.getById(1l);
+        nHotel.setManager(manager);
+        nHotel.setEmployees(hEmps);
         //create customer
         customerRepo.save(new Customer("Kitten","kitty@mail.com",true));
         //get customer
         Customer customer = customerRepo.getById(1l);
         //create room
         roomRepo.save(new Room("1",4,1600.00,true));
+        roomRepo.save(new Room("2",2,1200.00,true));
         //get room
-        Room room = roomRepo.getById(1l);
-
+        //set customer and hotel
+        Room room1 = roomRepo.getById(1l);
+        Room room2 = roomRepo.getById(2l);
         //todo - hotel
         // add list of rooms to hotel
+        List<Room> rooms = new ArrayList<>();
+        rooms.add(room1);
+        rooms.add(room2);
+        nHotel.setRooms(rooms);
+        //create hotel expense and expense types
+        expenseTypeRepo.save(new ExpenseType("electrical"));
+        ExpenseType electrical = expenseTypeRepo.getById(1l);
+        hotelExpenseRepo.save(new HotelExpense(new Date(),electrical,nHotel,2000.00,800.00));
+        //get hotel expense
+        HotelExpense electricalExpense = hotelExpenseRepo.getById(1l);
         // add hotel expenses
-
+        List<HotelExpense> hotelExpenses = new ArrayList<>();
+        hotelExpenses.add(electricalExpense);
+        nHotel.setHotel_expenses(hotelExpenses);
         // todo - room
         // add customer
         // add hotel
@@ -77,20 +104,6 @@ public class AppRunner implements CommandLineRunner {
         // add expense types to hotel and room expenses
 
 
-
-
-
-        List<Employee> hEmps = new ArrayList<>();
-        hEmps.add(landlord);
-        hEmps.add(manager);
-        hEmps.add(maintenance_one);
-        hEmps.add(maintenance_two);
-        hEmps.add(maintenance_three);
-
-        hotelRepo.save(new Hotel("north","9999 ave","AZ","98879"));
-        Hotel nHotel = hotelRepo.getById(1l);
-        nHotel.setManager(manager);
-        nHotel.setEmployees(hEmps);
         hotelRepo.save(nHotel);
 
 
