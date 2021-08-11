@@ -13,6 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "room_expenses")
@@ -27,6 +28,7 @@ public class RoomExpense {
     @NonNull
     ExpenseType expense_type;
     @ManyToOne
+    @NonNull
     Room room;
     @NonNull
     Double maintenance_payment;

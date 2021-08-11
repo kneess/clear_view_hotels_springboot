@@ -24,10 +24,11 @@ public class AppRunner implements CommandLineRunner {
     IRoomRepo roomRepo;
     IHotelExpenseRepo hotelExpenseRepo;
     IExpenseTypeRepo expenseTypeRepo;
+    IRoomExpenseRepo roomExpenseRepo;
 
     @Autowired
     public AppRunner(IEmployeeRepo employeeRepo, IHotelRepo hotelRepo, ICustomerRepo customerRepo, IRoomRepo roomRepo
-    ,IHotelExpenseRepo hotelExpenseRepo, IExpenseTypeRepo expenseTypeRepo)
+    ,IHotelExpenseRepo hotelExpenseRepo, IExpenseTypeRepo expenseTypeRepo, IRoomExpenseRepo roomExpenseRepo)
     {
         this.employeeRepo = employeeRepo;
         this.hotelRepo = hotelRepo;
@@ -35,6 +36,7 @@ public class AppRunner implements CommandLineRunner {
         this.roomRepo = roomRepo;
         this.hotelExpenseRepo = hotelExpenseRepo;
         this.expenseTypeRepo = expenseTypeRepo;
+        this.roomExpenseRepo = roomExpenseRepo;
     }
 
     @Override
@@ -96,12 +98,15 @@ public class AppRunner implements CommandLineRunner {
         nHotel.setHotel_expenses(hotelExpenses);
         // todo - room
         // add customer
-        // add hotel
-        // add room expenses
+        //add hotel
+        room1.setHotel(nHotel);
+        room1.setCustomer(customer);
+        room2.setHotel(nHotel);
+        room2.setCustomer(customer);
+        // create room expense
+        roomExpenseRepo.save(new RoomExpense(new Date(),electrical,room1,400.00));
+        roomExpenseRepo.save(new RoomExpense(new Date(),electrical,room2,200.00));
 
-        // todo - expense type
-        // create expense types
-        // add expense types to hotel and room expenses
 
 
         hotelRepo.save(nHotel);
