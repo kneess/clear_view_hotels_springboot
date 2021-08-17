@@ -24,5 +24,7 @@ public class Customer {
     @NonNull
     String email;
     @NonNull
+    String phoneNumber;
+    @NonNull
     Boolean active;
 }

@@ -41,22 +41,22 @@ public class AppRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        employeeRepo.save(new Employee("Toby","Landlord",1000000.00, true));
-        employeeRepo.save(new Employee("Cujo","Manager",55000.00,true));
-        employeeRepo.save(new Employee("Wishbone","Maintenance",32000.00,true));
-        employeeRepo.save(new Employee("Nemo","Maintenance",32000.00,true));
-        employeeRepo.save(new Employee("Dory","Maintenance",32000.00,true));
+        employeeRepo.save(new Employee("Anibal","anibal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Landlord",1000000.00, true));
+        employeeRepo.save(new Employee("Jenny","jenny@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Manager",55000.00,true));
+        employeeRepo.save(new Employee("Michal","michal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeRepo.save(new Employee("Nemo","nemo@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeRepo.save(new Employee("Dory","dory@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
         Employee landlord = employeeRepo.getById(1l);
         Employee manager = employeeRepo.getById(2l);
         Employee maintenance_one = employeeRepo.getById(3l);
         Employee maintenance_two = employeeRepo.getById(4l);
         Employee maintenance_three = employeeRepo.getById(5l);
         //set employee manager
-        manager.setEmp_manager(landlord);
-        landlord.setEmp_manager(landlord);
-        maintenance_one.setEmp_manager(manager);
-        maintenance_two.setEmp_manager(manager);
-        maintenance_three.setEmp_manager(manager);
+        manager.setEmployeeManager(landlord);
+        landlord.setEmployeeManager(landlord);
+        maintenance_one.setEmployeeManager(manager);
+        maintenance_two.setEmployeeManager(manager);
+        maintenance_three.setEmployeeManager(manager);
 
         List<Employee> hEmps = new ArrayList<>();
         hEmps.add(landlord);
@@ -65,17 +65,17 @@ public class AppRunner implements CommandLineRunner {
         hEmps.add(maintenance_two);
         hEmps.add(maintenance_three);
         //hotel creation
-        hotelRepo.save(new Hotel("north","9999 ave","AZ","98879"));
+        hotelRepo.save(new Hotel("Clear View North","9999 e Thomas ave","PHX","AZ","85030","908-888-8888"));
         Hotel nHotel = hotelRepo.getById(1l);
         nHotel.setManager(manager);
         nHotel.setEmployees(hEmps);
         //create customer
-        customerRepo.save(new Customer("Kitten","kitty@mail.com",true));
+        customerRepo.save(new Customer("Rachel","rachel@mail.com","808-000-0000",true));
         //get customer
         Customer customer = customerRepo.getById(1l);
         //create room
-        roomRepo.save(new Room("1",4,1600.00,true));
-        roomRepo.save(new Room("2",2,1200.00,true));
+        roomRepo.save(new Room("1",5,2,1800.00,true));
+        roomRepo.save(new Room("2",2,1,1300.00,true));
         //get room
         //set customer and hotel
         Room room1 = roomRepo.getById(1l);
@@ -95,7 +95,7 @@ public class AppRunner implements CommandLineRunner {
         // add hotel expenses
         List<HotelExpense> hotelExpenses = new ArrayList<>();
         hotelExpenses.add(electricalExpense);
-        nHotel.setHotel_expenses(hotelExpenses);
+        nHotel.setHotelExpenses(hotelExpenses);
         // todo - room
         // add customer
         //add hotel
@@ -106,11 +106,6 @@ public class AppRunner implements CommandLineRunner {
         // create room expense
         roomExpenseRepo.save(new RoomExpense(new Date(),electrical,room1,400.00));
         roomExpenseRepo.save(new RoomExpense(new Date(),electrical,room2,200.00));
-
-
-
         hotelRepo.save(nHotel);
-
-
     }
 }

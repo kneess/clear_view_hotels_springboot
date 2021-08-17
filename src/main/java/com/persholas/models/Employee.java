@@ -22,11 +22,23 @@ public class Employee {
     @NonNull
     String name;
     @NonNull
+    String email;
+    @NonNull
+    String address;
+    @NonNull
+    String city;
+    @NonNull
+    String state;
+    @NonNull
+    String zipCode;
+    @NonNull
+    String phoneNumber;
+    @NonNull
     String title;
     @NonNull
     Double salary;
     @OneToOne
-    Employee emp_manager;
+    Employee employeeManager;
     @NonNull
     Boolean active;
 }

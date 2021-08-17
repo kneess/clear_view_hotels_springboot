@@ -24,9 +24,13 @@ public class Hotel {
     @NonNull
     String address;
     @NonNull
+    String city;
+    @NonNull
     String state;
     @NonNull
     String zipCode;
+    @NonNull
+    String phoneNumber;
     @OneToOne
     Employee manager;
     @OneToMany
@@ -34,5 +38,5 @@ public class Hotel {
     @OneToMany
     List<Room> rooms;
     @OneToMany(mappedBy = "hotel")
-    List<HotelExpense> hotel_expenses;
+    List<HotelExpense> hotelExpenses;
 }

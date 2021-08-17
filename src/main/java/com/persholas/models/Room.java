@@ -20,13 +20,13 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @NonNull
-    String room_number;
+    String roomNumber;
     @NonNull
-    Integer num_of_rooms;
-//    @NonNull
-//    Double amenities_price;
+    Integer numOfRooms;
     @NonNull
-    Double rent;
+    Integer numOfBathrooms;
+    @NonNull
+    Double ratePerMonth;
     @OneToOne
     Customer customer;
     @NonNull
@@ -34,5 +34,5 @@ public class Room {
     @ManyToOne
     Hotel hotel;
     @OneToMany(mappedBy = "room")
-    List<RoomExpense> room_expenses;
+    List<RoomExpense> roomExpenses;
 }

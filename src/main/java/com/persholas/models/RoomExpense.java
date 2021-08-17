@@ -23,13 +23,13 @@ public class RoomExpense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @NonNull
-    Date created_date;
+    Date createdDate;
     @OneToOne
     @NonNull
-    ExpenseType expense_type;
+    ExpenseType expenseType;
     @ManyToOne
     @NonNull
     Room room;
     @NonNull
-    Double maintenance_payment;
+    Double maintenancePayment;
 }

@@ -21,5 +21,5 @@ public class ExpenseType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @NonNull
-    String expense_type;
+    String expenseType;
 }

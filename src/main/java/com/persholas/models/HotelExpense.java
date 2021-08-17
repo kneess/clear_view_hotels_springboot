@@ -23,7 +23,7 @@ public class HotelExpense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @NonNull
-    Date created_date;
+    Date createdDate;
     @NonNull
     @OneToOne
     ExpenseType expenseType;
@@ -31,7 +31,7 @@ public class HotelExpense {
     @ManyToOne
     Hotel hotel;
     @NonNull
-    Double employee_payments;
+    Double employeePayments;
     @NonNull
-    Double general_maintenance_payments;
+    Double generalMaintenancePayments;
 }
