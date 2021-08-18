@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -89,7 +88,7 @@ public class AppRunner implements CommandLineRunner {
         //create hotel expense and expense types
         expenseTypeRepo.save(new ExpenseType("electrical"));
         ExpenseType electrical = expenseTypeRepo.getById(1l);
-        hotelExpenseRepo.save(new HotelExpense(new Date(),electrical,nHotel,2000.00,800.00));
+        hotelExpenseRepo.save(new HotelExpense(new Date(),electrical,nHotel,800.00));
         //get hotel expense
         HotelExpense electricalExpense = hotelExpenseRepo.getById(1l);
         // add hotel expenses

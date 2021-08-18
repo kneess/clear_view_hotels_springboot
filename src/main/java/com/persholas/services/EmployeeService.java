@@ -24,7 +24,14 @@ public class EmployeeService {
 
     public List<Employee> getAllEmployees()
     {
-        log.warn("EmployeeService: Executing: getAllEmployees()");
+        log.warn("EmployeeService: Executing: getAllEmployees");
         return employeeRepo.findAll();
     }
+
+    public Employee getEmployeeById(Long id)
+    {
+        log.warn("EmployeeService: Executing: getEmployeeById");
+        return employeeRepo.getById(id);
+    }
+
 }

@@ -31,7 +31,5 @@ public class HotelExpense {
     @ManyToOne
     Hotel hotel;
     @NonNull
-    Double employeePayments;
-    @NonNull
-    Double generalMaintenancePayments;
+    Double paymentsMade;
 }
