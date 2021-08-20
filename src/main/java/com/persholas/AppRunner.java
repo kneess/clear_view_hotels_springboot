@@ -21,21 +21,17 @@ public class AppRunner implements CommandLineRunner {
     ICustomerRepo customerRepo;
     IHotelRepo hotelRepo;
     IRoomRepo roomRepo;
-    IHotelExpenseRepo hotelExpenseRepo;
-    IExpenseTypeRepo expenseTypeRepo;
-    IRoomExpenseRepo roomExpenseRepo;
+    IHotelAccountRepo hotelAccountRepo;
 
     @Autowired
     public AppRunner(IEmployeeRepo employeeRepo, IHotelRepo hotelRepo, ICustomerRepo customerRepo, IRoomRepo roomRepo
-    ,IHotelExpenseRepo hotelExpenseRepo, IExpenseTypeRepo expenseTypeRepo, IRoomExpenseRepo roomExpenseRepo)
+    , IHotelAccountRepo hotelAccountRepo)
     {
         this.employeeRepo = employeeRepo;
         this.hotelRepo = hotelRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
-        this.hotelExpenseRepo = hotelExpenseRepo;
-        this.expenseTypeRepo = expenseTypeRepo;
-        this.roomExpenseRepo = roomExpenseRepo;
+        this.hotelAccountRepo = hotelAccountRepo;
     }
 
     @Override
@@ -65,16 +61,21 @@ public class AppRunner implements CommandLineRunner {
         hEmps.add(maintenance_three);
         //hotel creation
         hotelRepo.save(new Hotel("Clear View North","9999 e Thomas ave","PHX","AZ","85030","908-888-8888"));
+        hotelRepo.save(new Hotel("Clear View West","9999 e Thomas ave","PHX","AZ","85030","908-888-8888"));
         Hotel nHotel = hotelRepo.getById(1l);
-        nHotel.setManager(manager);
         nHotel.setEmployees(hEmps);
         //create customer
         customerRepo.save(new Customer("Rachel","rachel@mail.com","808-000-0000",true));
         //get customer
         Customer customer = customerRepo.getById(1l);
         //create room
-        roomRepo.save(new Room("1",5,2,1800.00,true));
-        roomRepo.save(new Room("2",2,1,1300.00,true));
+
+        for(int i=1; i<=50; i++) {
+            roomRepo.save(new Room(i+"N",5,2,1800.00,true));
+        }
+        for(int i=51; i<=100; i++) {
+            roomRepo.save(new Room(i+"N", 2, 1, 1300.00, true));
+        }
         //get room
         //set customer and hotel
         Room room1 = roomRepo.getById(1l);
@@ -84,27 +85,26 @@ public class AppRunner implements CommandLineRunner {
         List<Room> rooms = new ArrayList<>();
         rooms.add(room1);
         rooms.add(room2);
+        for(Long i=3l; i<=100l; i++)
+        {
+            rooms.add(roomRepo.getById(i));
+        }
         nHotel.setRooms(rooms);
-        //create hotel expense and expense types
-        expenseTypeRepo.save(new ExpenseType("electrical"));
-        ExpenseType electrical = expenseTypeRepo.getById(1l);
-        hotelExpenseRepo.save(new HotelExpense(new Date(),electrical,nHotel,800.00));
-        //get hotel expense
-        HotelExpense electricalExpense = hotelExpenseRepo.getById(1l);
-        // add hotel expenses
-        List<HotelExpense> hotelExpenses = new ArrayList<>();
-        hotelExpenses.add(electricalExpense);
-        nHotel.setHotelExpenses(hotelExpenses);
+        //create hotel account
+        hotelAccountRepo.save(new HotelAccount(new Date(),400000.00,200000.00));
+        //get hotel account
+        HotelAccount account = hotelAccountRepo.getById(1l);
+        // add hotel account
+        nHotel.setHotelAccount(account);
         // todo - room
         // add customer
         //add hotel
         room1.setHotel(nHotel);
         room1.setCustomer(customer);
+        room1.setVacancy(false);
         room2.setHotel(nHotel);
         room2.setCustomer(customer);
-        // create room expense
-        roomExpenseRepo.save(new RoomExpense(new Date(),electrical,room1,400.00));
-        roomExpenseRepo.save(new RoomExpense(new Date(),electrical,room2,200.00));
+        room2.setVacancy(false);
         hotelRepo.save(nHotel);
     }
 }

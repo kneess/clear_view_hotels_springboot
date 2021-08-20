@@ -1,9 +1,10 @@
 package com.persholas.services;
 
-import com.persholas.dao.IHotelExpenseRepo;
+import com.persholas.dao.IHotelAccountRepo;
 import com.persholas.dao.IHotelRepo;
+import com.persholas.models.Employee;
 import com.persholas.models.Hotel;
-import com.persholas.models.HotelExpense;
+import com.persholas.models.HotelAccount;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,12 @@ import java.util.List;
 @Transactional
 public class HotelService {
     private IHotelRepo hotelRepo;
-    private IHotelExpenseRepo hotelExpenseRepo;
+    private IHotelAccountRepo hotelAccountRepo;
     @Autowired
-    public HotelService(IHotelRepo hotelRepo, IHotelExpenseRepo hotelExpenseRepo)
+    public HotelService(IHotelRepo hotelRepo, IHotelAccountRepo hotelAccountRepo)
     {
         this.hotelRepo = hotelRepo;
-        this.hotelExpenseRepo = hotelExpenseRepo;
+        this.hotelAccountRepo = hotelAccountRepo;
     }
 
     public List<Hotel> getAllHotels()
@@ -35,11 +36,4 @@ public class HotelService {
         log.warn("HotelService: getHotelById");
         return hotelRepo.getById(id);
     }
-
-    public List<HotelExpense> getAllHotelExpensesByHotel(Hotel hotel)
-    {
-        log.warn("HotelService: getAllHotelExpensesByHotel");
-        return hotelExpenseRepo.getAllByHotel(hotel);
-    }
-
 }

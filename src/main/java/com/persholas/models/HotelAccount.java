@@ -3,7 +3,6 @@ package com.persholas.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.AccessType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,8 +15,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "hotel_expenses")
-public class HotelExpense {
+@Table(name = "hotel_account")
+public class HotelAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +24,9 @@ public class HotelExpense {
     @NonNull
     Date createdDate;
     @NonNull
+    Double rentCollected;
+    @NonNull
+    Double salariesPaid;
     @OneToOne
-    ExpenseType expenseType;
-    @NonNull
-    @ManyToOne
     Hotel hotel;
-    @NonNull
-    Double paymentsMade;
 }

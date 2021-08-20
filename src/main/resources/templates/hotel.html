@@ -25,6 +25,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/home}">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id} +'/employees'}">Employees</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/customers}">Customers</a></li>
             </ul>
         </div>
     </div>
@@ -32,9 +34,23 @@
 <!-- Page content-->
 <div class="container">
     <div class="text-center mt-5">
-        <ul class="list-group" th:each="customer : ${customers}">
-            <a th:href="@{'/clearview/employees/'+${customer.id}}"><li class="list-group-item" th:text="${customer.name}">A second item</li></a>
-        </ul>
+        <h1 th:text="${hotel.name}"></h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Room Number</th>
+                <th scope="col">Number of Rooms</th>
+                <th scope="col">Vacant</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="room : ${rooms}">
+                    <th scope="row" th:text="${room.roomNumber}">1</th>
+                    <td th:text="${room.numOfRooms}">Mark</td>
+                    <td th:text="${room.vacancy}">Otto</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <!-- Bootstrap core JS-->

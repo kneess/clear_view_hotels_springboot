@@ -31,12 +31,10 @@ public class Hotel {
     String zipCode;
     @NonNull
     String phoneNumber;
-    @OneToOne
-    Employee manager;
     @OneToMany
     List<Employee> employees;
     @OneToMany
     List<Room> rooms;
-    @OneToMany(mappedBy = "hotel")
-    List<HotelExpense> hotelExpenses;
+    @OneToOne(mappedBy = "hotel")
+    HotelAccount hotelAccount;
 }

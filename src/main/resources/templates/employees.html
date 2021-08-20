@@ -25,7 +25,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/home}">Home</a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/hotels}">Hotels</a></li>
                 <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/customers}">Customers</a></li>
             </ul>
         </div>
@@ -34,8 +33,11 @@
 <!-- Page content-->
 <div class="container">
     <div class="text-center mt-5">
+<!--        check for hotel object before displaying head-->
+        <h3 th:if="${hotel != null}" th:text="${hotel.name} + ' Employees'"></h3>
+        <h3 th:if="${hotel == null}">All Employees</h3>
         <ul class="list-group" th:each="employee : ${employees}">
-            <a th:href="@{'/clearview/employees/'+${employee.id}}"><li class="list-group-item" th:text="${employee.name}">A second item</li></a>
+            <a th:href="@{'/clearview/allemployees/'+${employee.id}}"><li class="list-group-item" th:text="${employee.name}">A second item</li></a>
         </ul>
     </div>
 </div>

@@ -26,8 +26,8 @@ public class EmployeesController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employees")
-    public String hotels(Model model)
+    @GetMapping("/allemployees")
+    public String employees(Model model)
     {
         List<Employee> employees = employeeService.getAllEmployees();
         model.addAttribute("employees",employees);

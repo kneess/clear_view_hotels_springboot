@@ -33,6 +33,4 @@ public class Room {
     Boolean vacancy;
     @ManyToOne
     Hotel hotel;
-    @OneToMany(mappedBy = "room")
-    List<RoomExpense> roomExpenses;
 }

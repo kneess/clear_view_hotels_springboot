@@ -1,9 +1,7 @@
 package com.persholas.services;
 
-import com.persholas.dao.IRoomExpenseRepo;
 import com.persholas.dao.IRoomRepo;
 import com.persholas.models.Room;
-import com.persholas.models.RoomExpense;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +15,11 @@ import java.util.List;
 public class RoomService {
 
     private IRoomRepo roomRepo;
-    private IRoomExpenseRepo roomExpenseRepo;
 
     @Autowired
-    public RoomService(IRoomRepo roomRepo, IRoomExpenseRepo roomExpenseRepo)
+    public RoomService(IRoomRepo roomRepo)
     {
         this.roomRepo = roomRepo;
-        this.roomExpenseRepo = roomExpenseRepo;
     }
 
     public List<Room> getAllRooms()
@@ -36,11 +32,5 @@ public class RoomService {
     {
         log.warn("RoomService: Executing: getRoomById");
         return roomRepo.getById(id);
-    }
-
-    public List<RoomExpense> getAllRoomExpensesByRoom(Room room)
-    {
-        log.warn("RoomService: Executing: getAllRoomExpensesByRoom");
-        return roomExpenseRepo.getRoomExpensesByRoom(room);
     }
 }
