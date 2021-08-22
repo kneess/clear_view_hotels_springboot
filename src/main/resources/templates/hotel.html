@@ -25,9 +25,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/home}">Home</a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id} +'/employees'}">Employees</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id} +'/employees'}">Hotel Employees</a></li>
                 <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/customers}">Customers</a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/allemployees/form}">New Employee</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/employees/form'}">New Employee</a></li>
             </ul>
         </div>
     </div>
@@ -35,20 +35,25 @@
 <!-- Page content-->
 <div class="container">
     <div class="text-center mt-5">
-        <h1 th:text="${hotel.name}"></h1>
-        <table class="table">
+        <h3 th:text="${hotel.name}"></h3>
+        <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <th scope="col">Room Number</th>
                 <th scope="col">Number of Rooms</th>
-                <th scope="col">Vacant</th>
+                <th scope="col">Number of Bathrooms</th>
+                <th scope="col">Rate per month</th>
+                <th scope="col">Vacancy</th>
             </tr>
             </thead>
             <tbody>
                 <tr th:each="room : ${rooms}">
                     <th scope="row" th:text="${room.roomNumber}">1</th>
-                    <td th:text="${room.numOfRooms}">Mark</td>
-                    <td th:text="${room.vacancy}">Otto</td>
+                    <td th:text="${room.numOfRooms}">Room</td>
+                    <td th:text="${room.numOfBathrooms}">Bath</td>
+                    <td th:text="${room.ratePerMonth}">Rate</td>
+                    <td th:if="${!room.vacancy}">Not Available</td>
+                    <td th:if="${room.vacancy}">Available</td>
                 </tr>
             </tbody>
         </table>

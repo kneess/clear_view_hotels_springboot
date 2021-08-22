@@ -34,8 +34,8 @@ public class EmployeeService {
         return employeeRepo.getById(id);
     }
 
-    public void addNewEmployee(Employee employee)
+    public Employee addNewEmployee(Employee employee)
     {
-        employeeRepo.save(employee);
+        return employeeRepo.save(employee);
     }
 }

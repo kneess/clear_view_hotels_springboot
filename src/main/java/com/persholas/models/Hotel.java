@@ -34,6 +34,8 @@ public class Hotel {
     @OneToMany
     List<Employee> employees;
     @OneToMany
+    List<Customer> customers;
+    @OneToMany
     List<Room> rooms;
     @OneToOne(mappedBy = "hotel")
     HotelAccount hotelAccount;

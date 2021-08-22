@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+
 import javax.persistence.*;
 
 @Entity
@@ -20,11 +21,17 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @NonNull
-    String name;
+    String firstname;
+    @NonNull
+    String lastname;
     @NonNull
     String email;
     @NonNull
     String phoneNumber;
     @NonNull
     Boolean active;
+    @ManyToOne
+    Hotel hotel;
+    @OneToOne
+    Room room;
 }

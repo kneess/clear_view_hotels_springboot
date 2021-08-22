@@ -36,4 +36,13 @@ public class HotelService {
         log.warn("HotelService: getHotelById");
         return hotelRepo.getById(id);
     }
+
+    public void addEmployeeToHotel(Long hotelId, Employee employee)
+    {
+        Hotel hotel = getHotelById(hotelId);
+        List<Employee> employees = hotel.getEmployees();
+        employees.add(employee);
+        hotel.setEmployees(employees);
+        hotelRepo.save(hotel);
+    }
 }

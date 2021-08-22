@@ -36,11 +36,11 @@ public class AppRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        employeeRepo.save(new Employee("Anibal","anibal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Landlord",1000000.00, true));
-        employeeRepo.save(new Employee("Jenny","jenny@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Manager",55000.00,true));
-        employeeRepo.save(new Employee("Michal","michal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
-        employeeRepo.save(new Employee("Nemo","nemo@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
-        employeeRepo.save(new Employee("Dory","dory@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeRepo.save(new Employee("Anibal","Lecter","anibal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Landlord",1000000.00, true));
+        employeeRepo.save(new Employee("Jenny","Johnson","jenny@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Manager",55000.00,true));
+        employeeRepo.save(new Employee("Michal","Murray","michal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeRepo.save(new Employee("Nemo","Nancy","nemo@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeRepo.save(new Employee("Dory","Dan","dory@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
         Employee landlord = employeeRepo.getById(1l);
         Employee manager = employeeRepo.getById(2l);
         Employee maintenance_one = employeeRepo.getById(3l);
@@ -61,13 +61,20 @@ public class AppRunner implements CommandLineRunner {
         hEmps.add(maintenance_three);
         //hotel creation
         hotelRepo.save(new Hotel("Clear View North","9999 e Thomas ave","PHX","AZ","85030","908-888-8888"));
-        hotelRepo.save(new Hotel("Clear View West","9999 e Thomas ave","PHX","AZ","85030","908-888-8888"));
         Hotel nHotel = hotelRepo.getById(1l);
         nHotel.setEmployees(hEmps);
         //create customer
-        customerRepo.save(new Customer("Rachel","rachel@mail.com","808-000-0000",true));
+        customerRepo.save(new Customer("Jeremy","John","jmy@mail.com","808-000-0000",true));
+        customerRepo.save(new Customer("Rachel","Randy","rachel@mail.com","808-000-0000",true));
+        customerRepo.save(new Customer("Arnold","Ashley","arnold@mail.com","808-000-0000",true));
         //get customer
-        Customer customer = customerRepo.getById(1l);
+        List<Customer> customers = new ArrayList<>();
+        Customer customer1 = customerRepo.getById(1l);
+        Customer customer2 = customerRepo.getById(2l);
+        Customer customer3 = customerRepo.getById(3l);
+        customers.add(customer1);
+        customers.add(customer2);
+        customers.add(customer3);
         //create room
 
         for(int i=1; i<=50; i++) {
@@ -100,11 +107,12 @@ public class AppRunner implements CommandLineRunner {
         // add customer
         //add hotel
         room1.setHotel(nHotel);
-        room1.setCustomer(customer);
+        room1.setCustomer(customer1);
         room1.setVacancy(false);
         room2.setHotel(nHotel);
-        room2.setCustomer(customer);
+        room2.setCustomer(customer2);
         room2.setVacancy(false);
+        nHotel.setCustomers(customers);
         hotelRepo.save(nHotel);
     }
 }

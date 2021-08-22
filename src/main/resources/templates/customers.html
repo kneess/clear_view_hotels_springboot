@@ -32,9 +32,27 @@
 <!-- Page content-->
 <div class="container">
     <div class="text-center mt-5">
-        <ul class="list-group" th:each="customer : ${customers}">
-            <a th:href="@{'/clearview/employees/'+${customer.id}}"><li class="list-group-item" th:text="${customer.name}">A second item</li></a>
-        </ul>
+        <h3>Customers</h3>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Active</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${customers}">
+                <th scope="row" th:text="${customer.firstname}">1</th>
+                <td th:text="${customer.lastname}">Mark</td>
+                <td th:text="${customer.email}">Mark</td>
+                <td th:text="${customer.phoneNumber}">Not Available</td>
+                <td th:text="${customer.active}">Available</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <!-- Bootstrap core JS-->
