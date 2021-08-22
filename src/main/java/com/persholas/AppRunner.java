@@ -72,6 +72,9 @@ public class AppRunner implements CommandLineRunner {
         Customer customer1 = customerRepo.getById(1l);
         Customer customer2 = customerRepo.getById(2l);
         Customer customer3 = customerRepo.getById(3l);
+        customer1.setHotel(nHotel);
+        customer2.setHotel(nHotel);
+        customer3.setHotel(nHotel);
         customers.add(customer1);
         customers.add(customer2);
         customers.add(customer3);
@@ -87,6 +90,7 @@ public class AppRunner implements CommandLineRunner {
         //set customer and hotel
         Room room1 = roomRepo.getById(1l);
         Room room2 = roomRepo.getById(2l);
+
         //todo - hotel
         // add list of rooms to hotel
         List<Room> rooms = new ArrayList<>();
