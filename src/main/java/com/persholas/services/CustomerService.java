@@ -34,9 +34,8 @@ public class CustomerService {
         return customerRepo.getById(id);
     }
 
-    public Customer addNewCustomer(Customer customer)
+    public Customer addOrUpdateCustomer(Customer customer)
     {
         return customerRepo.save(customer);
     }
-
 }

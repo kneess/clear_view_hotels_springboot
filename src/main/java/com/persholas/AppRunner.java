@@ -99,7 +99,9 @@ public class AppRunner implements CommandLineRunner {
         rooms.add(room2);
         for(Long i=3l; i<=100l; i++)
         {
-            rooms.add(roomRepo.getById(i));
+            Room room = roomRepo.getById(i);
+            room.setHotel(nHotel);
+            rooms.add(room);
         }
         nHotel.setRooms(rooms);
         //create hotel account
