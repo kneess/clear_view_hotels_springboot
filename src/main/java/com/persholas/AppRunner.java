@@ -90,6 +90,7 @@ public class AppRunner implements CommandLineRunner {
         //set customer and hotel
         Room room1 = roomRepo.getById(1l);
         Room room2 = roomRepo.getById(2l);
+        customer1.setRoom(room1);
 
         //todo - hotel
         // add list of rooms to hotel

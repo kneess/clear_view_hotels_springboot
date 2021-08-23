@@ -25,6 +25,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/home}">Home</a></li>
+                <li class="nav-item" th:if="${hotel == null}"><a class="nav-link active" aria-current="page" th:href="@{/clearview/hotels}">Hotels</a></li>
+                <li class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}}">Hotel</a></li>
+                <li class="nav-item" th:if="${hotel == null}"><a class="nav-link active" aria-current="page" th:href="@{/clearview/employees}">All Employees</a></li>
+                <li class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/employees'}">Hotel Employees</a></li>
             </ul>
         </div>
     </div>
@@ -45,18 +49,22 @@
                 <th scope="col">Hotel ID</th>
                 <th scope="col">Room Number</th>
                 <th scope="col">Active</th>
+                <th scope="col" th:if="${hotel != null}">Room Assign</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="customer : ${customers}">
                 <th scope="row" th:text="${customer.id}">1</th>
-                <th th:text="${customer.firstname}">1</th>
-                <td th:text="${customer.lastname}">Mark</td>
+                <th th:text="${customer.firstName}">1</th>
+                <td th:text="${customer.lastName}">Mark</td>
                 <td th:text="${customer.email}">Mark</td>
                 <td th:text="${customer.phoneNumber}">Not Available</td>
                 <td th:text="${customer.hotel.id}">Available</td>
                 <td th:text="${customer.room != null} ? ${customer.room.roomNumber} : 'Not Assigned'">Available</td>
                 <td th:text="${customer.active}">Available</td>
+                <td th:if="${customer.room == null and customer.active == true and hotel != null}"><button class="btn btn-primary">Assign Room</button></td>
+                <td th:if="${customer.room != null and hotel != null}">Assigned</td>
+                <td th:if="${customer.active == false and hotel != null}">Inactive</td>
             </tr>
             </tbody>
         </table>

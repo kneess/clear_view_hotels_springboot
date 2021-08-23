@@ -77,7 +77,7 @@ public class EmployeesController {
                     managers.add(e);
                 }
             }
-            model.addAttribute("hotelId",hotelId);
+            model.addAttribute("hotel",hotel);
             model.addAttribute("managers",managers);
             return "newEmployeeForm";
         }
@@ -87,6 +87,6 @@ public class EmployeesController {
         employee.setEmployeeManager(manager);
         Employee employee1 = employeeService.addNewEmployee(employee);
         hotelService.addEmployeeToHotel(hotelId,employee1);
-        return "redirect:/clearview/employees";
+        return "redirect:/clearview/hotels/"+hotelId+"/employees";
     }
 }

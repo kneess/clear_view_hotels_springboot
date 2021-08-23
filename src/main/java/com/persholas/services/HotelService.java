@@ -2,6 +2,7 @@ package com.persholas.services;
 
 import com.persholas.dao.IHotelAccountRepo;
 import com.persholas.dao.IHotelRepo;
+import com.persholas.models.Customer;
 import com.persholas.models.Employee;
 import com.persholas.models.Hotel;
 import com.persholas.models.HotelAccount;
@@ -43,6 +44,15 @@ public class HotelService {
         List<Employee> employees = hotel.getEmployees();
         employees.add(employee);
         hotel.setEmployees(employees);
+        hotelRepo.save(hotel);
+    }
+    public void addCustomerToHotel(Long hotelId, Customer customer)
+    {
+        Hotel hotel = getHotelById(hotelId);
+        List<Customer> customers = hotel.getCustomers();
+        customers.add(customer);
+        hotel.setCustomers(customers);
+        customer.setHotel(hotel);
         hotelRepo.save(hotel);
     }
 }

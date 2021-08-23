@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Getter
@@ -21,12 +23,16 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @NonNull
-    String firstname;
+    @NotBlank(message = "Must enter in first name")
+    String firstName;
     @NonNull
-    String lastname;
+    @NotBlank(message = "Must enter in last name")
+    String lastName;
     @NonNull
+    @Pattern(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", message = "Not a valid email")
     String email;
     @NonNull
+    @NotBlank(message = "Must enter in phone number")
     String phoneNumber;
     @NonNull
     Boolean active;
