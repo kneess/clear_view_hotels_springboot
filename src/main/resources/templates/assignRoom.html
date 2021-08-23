@@ -39,8 +39,8 @@
             <select class="form-select" aria-label="Default select example" th:name="roomId">
                 <option th:each="room : ${rooms}"
                         th:value="${room.id}"
-                        th:text="'Room: '+${room.roomNumber} +' Rooms:'+${room.numOfRooms} +' Bath:'
-                        +${room.numOfBathrooms}+' Rent-Monthly:'+${room.ratePerMonth} ">Open this select menu</option>
+                        th:text="'Room: '+${room.roomNumber} +'      Rooms: '+${room.numOfRooms} +'      Bath: '
+                        +${room.numOfBathrooms}+'      Rent-Monthly: $'+${room.ratePerMonth} ">Open this select menu</option>
             </select>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
