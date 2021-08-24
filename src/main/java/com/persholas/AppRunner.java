@@ -22,25 +22,33 @@ public class AppRunner implements CommandLineRunner {
     IHotelRepo hotelRepo;
     IRoomRepo roomRepo;
     IHotelAccountRepo hotelAccountRepo;
+    IAuthGroupRepo userRepo;
 
     @Autowired
     public AppRunner(IEmployeeRepo employeeRepo, IHotelRepo hotelRepo, ICustomerRepo customerRepo, IRoomRepo roomRepo
-    , IHotelAccountRepo hotelAccountRepo)
+    , IHotelAccountRepo hotelAccountRepo, IAuthGroupRepo authGroupRepo)
     {
         this.employeeRepo = employeeRepo;
         this.hotelRepo = hotelRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
         this.hotelAccountRepo = hotelAccountRepo;
+        this.userRepo = authGroupRepo;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        employeeRepo.save(new Employee("Anibal","Lecter","anibal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Landlord",1000000.00, true));
-        employeeRepo.save(new Employee("Jenny","Johnson","jenny@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Manager",55000.00,true));
-        employeeRepo.save(new Employee("Michal","Murray","michal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
-        employeeRepo.save(new Employee("Nemo","Nancy","nemo@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
-        employeeRepo.save(new Employee("Dory","Dan","dory@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeRepo.save(new Employee("anibal","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Anibal","Lecter","anibal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Landlord",1000000.00, true));
+        employeeRepo.save(new Employee("jenny","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Jenny","Johnson","jenny@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Manager",55000.00,true));
+        employeeRepo.save(new Employee("michal","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Michal","Murray","michal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeRepo.save(new Employee("nemo","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Nemo","Nancy","nemo@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeRepo.save(new Employee("dory","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Dory","Dan","dory@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        userRepo.save(new AuthGroup("anibal","ROLE_ADMIN"));
+        userRepo.save(new AuthGroup("jenny","ROLE_EMPLOYEE"));
+        userRepo.save(new AuthGroup("michal","ROLE_EMPLOYEE"));
+        userRepo.save(new AuthGroup("nemo","ROLE_EMPLOYEE"));
+        userRepo.save(new AuthGroup("dory","ROLE_EMPLOYEE"));
+
         Employee landlord = employeeRepo.getById(1l);
         Employee manager = employeeRepo.getById(2l);
         Employee maintenance_one = employeeRepo.getById(3l);
@@ -64,9 +72,12 @@ public class AppRunner implements CommandLineRunner {
         Hotel nHotel = hotelRepo.getById(1l);
         nHotel.setEmployees(hEmps);
         //create customer
-        customerRepo.save(new Customer("Jeremy","John","jmy@mail.com","808-000-0000",true));
-        customerRepo.save(new Customer("Rachel","Randy","rachel@mail.com","808-000-0000",true));
-        customerRepo.save(new Customer("Arnold","Ashley","arnold@mail.com","808-000-0000",true));
+        customerRepo.save(new Customer("jeremy","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Jeremy","John","jmy@mail.com","808-000-0000",true));
+        customerRepo.save(new Customer("rachel","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Rachel","Randy","rachel@mail.com","808-000-0000",true));
+        customerRepo.save(new Customer("arnold","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Arnold","Ashley","arnold@mail.com","808-000-0000",true));
+        userRepo.save(new AuthGroup("jeremy","ROLE_CUSTOMER"));
+        userRepo.save(new AuthGroup("rachel","ROLE_CUSTOMER"));
+        userRepo.save(new AuthGroup("arnold","ROLE_CUSTOMER"));
         //get customer
         List<Customer> customers = new ArrayList<>();
         Customer customer1 = customerRepo.getById(1l);
@@ -81,10 +92,10 @@ public class AppRunner implements CommandLineRunner {
         //create room
 
         for(int i=1; i<=50; i++) {
-            roomRepo.save(new Room(i+"N",5,2,1800.00,true));
+            roomRepo.save(new Room(i+"N",5,2,1800.00,"808-000-0000",true));
         }
         for(int i=51; i<=100; i++) {
-            roomRepo.save(new Room(i+"N", 2, 1, 1300.00, true));
+            roomRepo.save(new Room(i+"N", 2, 1, 1300.00, "808-000-0000",true));
         }
         //get room
         //set customer and hotel

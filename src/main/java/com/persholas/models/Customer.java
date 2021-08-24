@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -18,21 +19,22 @@ import javax.validation.constraints.Pattern;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "customers")
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Customer implements Serializable {
+    static final long serialVersionUID = 6381462249347345007L;
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NonNull
-    @NotBlank(message = "Must enter in first name")
+    @NonNull @Column(unique = true) @NotBlank
+    String cUsername;
+    @NonNull @NotBlank
+    String cPassword;
+    @NonNull @NotBlank(message = "Must enter in first name")
     String firstName;
-    @NonNull
-    @NotBlank(message = "Must enter in last name")
+    @NonNull @NotBlank(message = "Must enter in last name")
     String lastName;
-    @NonNull
-    @Pattern(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", message = "Not a valid email")
+    @NonNull @Pattern(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", message = "Not a valid email")
     String email;
-    @NonNull
-    @NotBlank(message = "Must enter in phone number")
+    @NonNull @NotBlank(message = "Must enter in phone number")
     String phoneNumber;
     @NonNull
     Boolean active;

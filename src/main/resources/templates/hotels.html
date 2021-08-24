@@ -19,7 +19,7 @@
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/clearview/home}">Hotels</a>
+        <a class="navbar-brand" th:href="@{/clearview/home}">ClearView</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -39,7 +39,10 @@
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
                     <th scope="col">Phone Number</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">City</th>
                     <th scope="col">State</th>
+                    <th scope="col">Zip</th>
                     <th scope="col">Details</th>
                 </tr>
                 </thead>
@@ -48,7 +51,10 @@
                     <th scope="row" th:text="${hotel.id}">1</th>
                     <td th:text="${hotel.name}">Mark</td>
                     <td th:text="${hotel.phoneNumber}">Mark</td>
+                    <td th:text="${hotel.address}">Not Available</td>
+                    <td th:text="${hotel.city}">Not Available</td>
                     <td th:text="${hotel.state}">Not Available</td>
+                    <td th:text="${hotel.zipCode}">Not Available</td>
                     <td><a th:href="@{'/clearview/hotels/'+${hotel.id}}"><button class="btn btn-primary">Hotel Details</button></a></td>
                 </tr>
                 </tbody>

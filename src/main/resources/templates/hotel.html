@@ -19,16 +19,14 @@
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/clearview/home}">Hotels</a>
+        <a class="navbar-brand" th:href="@{/clearview/home}">ClearView</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/clearview/home}">Home</a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id} +'/employees'}">Hotel Employees</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id} +'/employees'}">Hotel Employees</a></li>
                 <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/customers'}">Hotel Customers</a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/customers/form'}">New Customer</a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/employees/form'}">New Employee</a></li>
             </ul>
         </div>
     </div>
@@ -41,6 +39,7 @@
             <thead>
             <tr>
                 <th scope="col">Room Number</th>
+                <th scope="col">Phone Number</th>
                 <th scope="col">Number of Rooms</th>
                 <th scope="col">Number of Bathrooms</th>
                 <th scope="col">Rate per month</th>
@@ -50,6 +49,7 @@
             <tbody>
                 <tr th:each="room : ${rooms}">
                     <th scope="row" th:text="${room.roomNumber}">1</th>
+                    <td th:text="${room.phoneNumber}">Room</td>
                     <td th:text="${room.numOfRooms}">Room</td>
                     <td th:text="${room.numOfBathrooms}">Bath</td>
                     <td th:text="${room.ratePerMonth}">Rate</td>

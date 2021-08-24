@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 @Slf4j
-@RequestMapping("/clearview")
+@RequestMapping("clearview")
 public class HotelsController {
 
     HotelService hotelService;

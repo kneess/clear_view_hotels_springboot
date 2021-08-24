@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/clearview")
+@RequestMapping("clearview")
 @Slf4j
 public class HomeController {
 
@@ -15,5 +15,10 @@ public class HomeController {
     {
         log.warn("executing: HomePage");
         return "home";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
     }
 }

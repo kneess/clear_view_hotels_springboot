@@ -1,6 +1,9 @@
 package com.persholas.controllers;
 
+import com.persholas.dao.IAuthGroupRepo;
 import com.persholas.dao.IHotelRepo;
+import com.persholas.models.AuthGroup;
+import com.persholas.models.Customer;
 import com.persholas.models.Employee;
 import com.persholas.models.Hotel;
 import com.persholas.services.EmployeeService;
@@ -18,16 +21,18 @@ import java.util.List;
 
 @Controller
 @Slf4j
-@RequestMapping("/clearview")
+@RequestMapping("clearview")
 public class EmployeesController {
 
     EmployeeService employeeService;
     HotelService hotelService;
+    IAuthGroupRepo userRepo;
     @Autowired
-    public EmployeesController(EmployeeService employeeService,HotelService hotelService)
+    public EmployeesController(EmployeeService employeeService,HotelService hotelService,IAuthGroupRepo userRepo)
     {
         this.employeeService = employeeService;
         this.hotelService = hotelService;
+        this.userRepo = userRepo;
     }
 
     @GetMapping("/employees")
@@ -81,12 +86,32 @@ public class EmployeesController {
             model.addAttribute("managers",managers);
             return "newEmployeeForm";
         }
-        //assigning employee a manager and a hotel
-        Employee manager = employeeService.getEmployeeById(managerId);
-        log.warn(manager.getId().toString());
-        employee.setEmployeeManager(manager);
-        Employee employee1 = employeeService.addNewEmployee(employee);
-        hotelService.addEmployeeToHotel(hotelId,employee1);
-        return "redirect:/clearview/hotels/"+hotelId+"/employees";
+        if(userRepo.findByaUsername(employee.getEUsername()).isEmpty()) {
+            //assigning employee a manager and a hotel
+            Employee manager = employeeService.getEmployeeById(managerId);
+            log.warn(manager.getId().toString());
+            employee.setEmployeeManager(manager);
+            Employee employee1 = employeeService.addNewEmployee(employee);
+            //setting employee role
+            userRepo.save(new AuthGroup(employee.getEUsername(),"ROLE_EMPLOYEE"));
+            hotelService.addEmployeeToHotel(hotelId, employee1);
+            return "redirect:/clearview/hotels/" + hotelId + "/employees";
+        }
+
+        Hotel hotel = hotelService.getHotelById(hotelId);
+        List<Employee> employees = hotel.getEmployees();
+        List<Employee> managers = new ArrayList<>();
+        for(Employee e : employees)
+        {
+            if(e.getTitle().compareTo("Manager") == 0){
+                managers.add(e);
+            }
+        }
+        String usernameExists = "Username already taken please enter in another";
+        model.addAttribute("usernameExists",usernameExists);
+        model.addAttribute("hotel",hotel);
+        model.addAttribute("managers",managers);
+        return "newEmployeeForm";
     }
+
 }

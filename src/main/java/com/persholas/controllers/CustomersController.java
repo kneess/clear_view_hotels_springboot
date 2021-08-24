@@ -1,9 +1,7 @@
 package com.persholas.controllers;
 
-import com.persholas.models.Customer;
-import com.persholas.models.Employee;
-import com.persholas.models.Hotel;
-import com.persholas.models.Room;
+import com.persholas.dao.IAuthGroupRepo;
+import com.persholas.models.*;
 import com.persholas.services.CustomerService;
 import com.persholas.services.EmployeeService;
 import com.persholas.services.HotelService;
@@ -21,18 +19,20 @@ import java.util.List;
 
 @Controller
 @Slf4j
-@RequestMapping("/clearview")
+@RequestMapping("clearview")
 public class CustomersController {
 
     CustomerService customerService;
     HotelService hotelService;
     RoomService roomService;
+    IAuthGroupRepo userRepo;
     @Autowired
-    public CustomersController(CustomerService customerService, HotelService hotelService,RoomService roomService)
+    public CustomersController(CustomerService customerService, HotelService hotelService,RoomService roomService,IAuthGroupRepo userRepo)
     {
         this.customerService = customerService;
         this.hotelService = hotelService;
         this.roomService = roomService;
+        this.userRepo = userRepo;
     }
 
     @GetMapping("/customers")
@@ -57,16 +57,25 @@ public class CustomersController {
     @PostMapping("/hotels/{hotelId}/customers")
     public String addCustomer(@PathVariable("hotelId") Long hotelId
             , @ModelAttribute("customer") @Valid Customer customer,
-                            BindingResult bindingResult)
+                            BindingResult bindingResult,Model model)
     {
         if(bindingResult.hasErrors())
         {
             log.warn(bindingResult.getAllErrors().toString());
             return "newCustomerForm";
         }
-        Customer newCustomer = customerService.addOrUpdateCustomer(customer);
-        hotelService.addCustomerToHotel(hotelId, newCustomer);
-        return "redirect:/clearview/hotels/"+ hotelId +"/customers";
+        if(userRepo.findByaUsername(customer.getCUsername()).isEmpty()) {
+            Customer newCustomer = customerService.addOrUpdateCustomer(customer);
+            hotelService.addCustomerToHotel(hotelId, newCustomer);
+            userRepo.save(new AuthGroup(newCustomer.getCUsername(), "ROLE_CUSTOMER"));
+            return "redirect:/clearview/hotels/" + hotelId + "/customers";
+        }
+        String usernameExists = "Username already taken please enter in another";
+        Hotel hotel = hotelService.getHotelById(hotelId);
+        model.addAttribute("usernameExists",usernameExists);
+        model.addAttribute("hotel",hotel);
+        model.addAttribute("customer",customer);
+        return "newCustomerForm";
     }
 
     @GetMapping("/hotels/{hotelId}/customers/{customerId}/assignroom")

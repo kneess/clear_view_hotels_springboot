@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="htp://www.thymeleaf.org http://www.thymeleaf.org
+  t
+   http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Clearview Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+<body>
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/clearview/}">ClearView</a>
+        <div sec:authorize="isAuthenticated()">
+            Logged user: <span sec:authentication="name"></span>
+        </div>
+    </div>
+
+</nav>
+<!-- Page content-->
+<div class="container">
+
+
+    <div class="raw">
+        <div class="col">
+        </div>
+
+        <div class="col">
+            <div  th:if="${param.error}" class="error">
+                Invalid username and password.
+            </div>
+            <div  th:if="${param.logout}" class="error">
+                You have been logged out.
+            </div>
+
+            <!-- Login Form -->
+            <form th:action="@{/clearview/login/authenticate}" method="post">
+
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" id="username"
+                           aria-describedby="usernamehelp">
+                    <div id="usernamehelp" class="form-text">Enter Username.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="password">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col">
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<!--<script src="../js/scripts.js"></script>-->
+</body>
+</html>

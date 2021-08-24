@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -19,50 +20,46 @@ import javax.validation.constraints.Pattern;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "employees")
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Employee implements Serializable {
+    static final long serialVersionUID = 6381462249347345007L;
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NonNull
-    @NotBlank(message = "Must enter in name")
+    @NonNull @Column(unique = true) @NotBlank
+    String eUsername;
+    @NonNull @NotBlank
+    String ePassword;
+    @NonNull @NotBlank(message = "Must enter in name")
     String firstName;
-    @NonNull
-    @NotBlank(message = "Must enter in last name")
+    @NonNull @NotBlank(message = "Must enter in last name")
     String lastName;
-    @NonNull
-    @Pattern(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", message = "Not a valid email")
+    @NonNull @Pattern(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", message = "Not a valid email")
     String email;
-    @NonNull
-    @NotBlank(message = "Must enter in address")
+    @NonNull @NotBlank(message = "Must enter in address")
     String address;
-    @NonNull
-    @NotBlank(message = "Must enter in city")
+    @NonNull @NotBlank(message = "Must enter in city")
     String city;
-    @NonNull
-    @NotBlank(message = "Must enter in state")
+    @NonNull @NotBlank(message = "Must enter in state")
     String state;
-    @NonNull
-    @NotBlank(message = "Must enter in zip code")
+    @NonNull @NotBlank(message = "Must enter in zip code")
     String zipCode;
-    @NonNull
-    @NotBlank(message = "Must enter in phone number")
+    @NonNull @NotBlank(message = "Must enter in phone number")
     String phoneNumber;
-    @NonNull
-    @NotBlank(message = "Must enter in title")
+    @NonNull @NotBlank(message = "Must enter in title")
     String title;
-    @NonNull
-    @Min(value = 12000, message = "must be equal or greater than 12000")
+    @NonNull @Min(value = 12000, message = "must be equal or greater than 12000")
     Double salary;
     @OneToOne
     Employee employeeManager;
-    @NonNull
-    @NotNull
+    @NonNull @NotNull
     Boolean active;
 
-    public Employee(String firstname, String email, String address, String city, String state, String zip, String phoneNumber,
+    public Employee(String firstname,String eUsername, String ePassword, String email, String address, String city, String state, String zip, String phoneNumber,
                     String title, Double salary, Employee employeeManager, Boolean active)
     {
         this.firstName = firstname;
+        this.eUsername = eUsername;
+        this.ePassword = ePassword;
         this.email = email;
         this.address = address;
         this.city = city;

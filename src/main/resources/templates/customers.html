@@ -19,7 +19,7 @@
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/clearview/home}">Hotels</a>
+        <a class="navbar-brand" th:href="@{/clearview/home}">ClearView</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -28,7 +28,8 @@
                 <li class="nav-item" th:if="${hotel == null}"><a class="nav-link active" aria-current="page" th:href="@{/clearview/hotels}">Hotels</a></li>
                 <li class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}}">Hotel</a></li>
                 <li class="nav-item" th:if="${hotel == null}"><a class="nav-link active" aria-current="page" th:href="@{/clearview/employees}">All Employees</a></li>
-                <li class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/employees'}">Hotel Employees</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/employees'}">Hotel Employees</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/customers/form'}"><button class="btn btn-primary">New Customers</button></a></li>
             </ul>
         </div>
     </div>
@@ -36,20 +37,22 @@
 <!-- Page content-->
 <div class="container">
     <div class="text-center mt-5">
-        <h3 th:if="${hotel != null}" th:text="${hotel.name} + ' Customers'"></h3>
-        <h3 th:if="${hotel == null}">All Customers</h3>
+            <h3 th:if="${hotel != null}" th:text="${hotel.name} + ' Customers'"></h3>
+            <h3 th:if="${hotel == null}">All Customers</h3>
+        </div>
         <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone Number</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col">Email</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col">Phone Number</th>
                 <th scope="col">Hotel ID</th>
                 <th scope="col">Room Number</th>
+                <th scope="col">Room Phone Number</th>
                 <th scope="col">Active</th>
-                <th scope="col" th:if="${hotel != null}">Room Assign</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col" th:if="${hotel != null}">Room Assign</th>
             </tr>
             </thead>
             <tbody>
@@ -57,14 +60,15 @@
                 <th scope="row" th:text="${customer.id}">1</th>
                 <th th:text="${customer.firstName}">1</th>
                 <td th:text="${customer.lastName}">Mark</td>
-                <td th:text="${customer.email}">Mark</td>
-                <td th:text="${customer.phoneNumber}">Not Available</td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${customer.email}">Mark</td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${customer.phoneNumber}">Not Available</td>
                 <td th:text="${customer.hotel.id}">Available</td>
                 <td th:text="${customer.room != null} ? ${customer.room.roomNumber} : 'Not Assigned'">Available</td>
+                <td th:text="${customer.room != null} ? ${customer.room.phoneNumber} : 'Not Available'">Available</td>
                 <td th:text="${customer.active}">Available</td>
-                <td th:if="${customer.room == null and customer.active == true and hotel != null}"><a th:href="@{'/clearview/hotels/'+${hotel.id}+'/customers/'+${customer.id}+'/assignroom'}"><button class="btn btn-primary">Assign Room</button></a></td>
-                <td th:if="${customer.room != null and hotel != null}">Assigned</td>
-                <td th:if="${customer.active == false and hotel != null}">Inactive</td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" th:if="${customer.room == null and customer.active == true and hotel != null}"><a th:href="@{'/clearview/hotels/'+${hotel.id}+'/customers/'+${customer.id}+'/assignroom'}"><button class="btn btn-primary">Assign Room</button></a></td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" th:if="${customer.room != null and hotel != null}">Assigned</td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" th:if="${customer.active  == false and hotel != null}">Inactive</td>
             </tr>
             </tbody>
         </table>

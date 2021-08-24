@@ -27,6 +27,8 @@ public class Room {
     Integer numOfBathrooms;
     @NonNull
     Double ratePerMonth;
+    @NonNull
+    String phoneNumber;
     @OneToOne
     Customer customer;
     @NonNull
