@@ -37,6 +37,4 @@ public class Hotel {
     List<Customer> customers;
     @OneToMany
     List<Room> rooms;
-    @OneToOne(mappedBy = "hotel")
-    HotelAccount hotelAccount;
 }

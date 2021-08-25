@@ -21,18 +21,16 @@ public class AppRunner implements CommandLineRunner {
     ICustomerRepo customerRepo;
     IHotelRepo hotelRepo;
     IRoomRepo roomRepo;
-    IHotelAccountRepo hotelAccountRepo;
     IAuthGroupRepo userRepo;
 
     @Autowired
     public AppRunner(IEmployeeRepo employeeRepo, IHotelRepo hotelRepo, ICustomerRepo customerRepo, IRoomRepo roomRepo
-    , IHotelAccountRepo hotelAccountRepo, IAuthGroupRepo authGroupRepo)
+    , IAuthGroupRepo authGroupRepo)
     {
         this.employeeRepo = employeeRepo;
         this.hotelRepo = hotelRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
-        this.hotelAccountRepo = hotelAccountRepo;
         this.userRepo = authGroupRepo;
     }
 
@@ -115,12 +113,6 @@ public class AppRunner implements CommandLineRunner {
             rooms.add(room);
         }
         nHotel.setRooms(rooms);
-        //create hotel account
-        hotelAccountRepo.save(new HotelAccount(new Date(),400000.00,200000.00));
-        //get hotel account
-        HotelAccount account = hotelAccountRepo.getById(1l);
-        // add hotel account
-        nHotel.setHotelAccount(account);
         // todo - room
         // add customer
         //add hotel

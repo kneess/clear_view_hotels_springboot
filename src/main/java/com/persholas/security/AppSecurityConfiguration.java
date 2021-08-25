@@ -54,7 +54,7 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/clearview/").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/clearview/login").usernameParameter("username").passwordParameter("password").loginProcessingUrl("/clearview/login/authenticate").defaultSuccessUrl("/clearview/home").failureUrl("/login?error=true").permitAll()
+                .formLogin().loginPage("/clearview/login").usernameParameter("username").passwordParameter("password").loginProcessingUrl("/clearview/login/authenticate").defaultSuccessUrl("/clearview/home").failureUrl("/clearview/login?error=true").permitAll()
                 .and()
                 .logout().invalidateHttpSession(true).clearAuthentication(true).logoutRequestMatcher(new AntPathRequestMatcher("/clearview/logout")).logoutSuccessUrl("/clearview/").permitAll().and().exceptionHandling().accessDeniedPage("/403");
 
