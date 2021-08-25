@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -32,6 +33,11 @@ public class CustomerService {
     {
         log.warn("CustomerService: Executing: getCustomerById");
         return customerRepo.getById(id);
+    }
+
+    public Optional<Customer> getCustomerByUsername(String username)
+    {
+        return customerRepo.findBycUsername(username);
     }
 
     public Customer addOrUpdateCustomer(Customer customer)

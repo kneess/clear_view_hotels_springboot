@@ -30,6 +30,7 @@
                 <li class="nav-item" th:if="${hotel == null}"><a class="nav-link active" aria-current="page" th:href="@{/clearview/customers}">All Customers</a></li>
                 <li class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/customers'}">Hotel Customers</a></li>
                 <li class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/employees/form'}"><button class="btn btn-primary">New Employee</button></a></li>
+                <li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/clearview/logout}">Logout</a></li>
             </ul>
         </div>
     </div>
@@ -70,7 +71,7 @@
                 <td th:text="${employee.zipCode}">Room</td>
                 <td th:text="${employee.phoneNumber}">Room</td>
                 <td th:text="${employee.title}">Room</td>
-                <td th:text="${employee.salary}">Room</td>
+                <td th:text="${#numbers.formatCurrency(employee.salary)}">Room</td>
                 <td th:text="${employee.employeeManager.id}">Room</td>
                 <td th:text="${employee.active}">Room</td>
             </a></tr>

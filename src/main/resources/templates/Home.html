@@ -14,6 +14,7 @@
     <meta name="author" content="" />
     <title>ClearView Hotels Homepage</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
 <!-- Responsive navbar-->
@@ -48,6 +49,14 @@
                     <li class="nav-item"><a class="nav-link" th:href="@{/clearview/hotels}">Hotels</a></li>
                 </div>
 
+                <div sec:authorize="hasRole('ROLE_CUSTOMER')">
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/clearview/myroom/'+ ${#authentication.getName()}}">My Room</a></li>
+                </div>
+
+                <div sec:authorize="isAuthenticated()">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/clearview/logout}">Logout</a></li>
+                </div>
+
             </ul>
         </div>
     </div>
@@ -55,10 +64,7 @@
 <!-- Page content-->
 <div class="container">
     <div class="text-center mt-5">
-        <h1>index</h1>
-        <h1>A Bootstrap 5 Starter Template</h1>
-        <p class="lead">A complete project boilerplate built with Bootstrap</p>
-        <p>Bootstrap v5.0.1</p>
+        <h1 class="display-1">Welcome to Clear View Hotels</h1>
     </div>
 </div>
 <!-- Bootstrap core JS-->

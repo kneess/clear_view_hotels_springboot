@@ -1,0 +1,11 @@
+body {
+    background-image: url("../imgs/hotel.jpg");
+    background-repeat: no-repeat;
+    background-size: 100vw 100vh;
+}
+
+.display-1 {
+    font-size: 5rem;
+    color: snow;
+    font-weight: 500;
+}

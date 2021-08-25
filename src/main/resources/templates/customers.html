@@ -30,6 +30,7 @@
                 <li class="nav-item" th:if="${hotel == null}"><a class="nav-link active" aria-current="page" th:href="@{/clearview/employees}">All Employees</a></li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/employees'}">Hotel Employees</a></li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item" th:if="${hotel != null}"><a class="nav-link active" aria-current="page" th:href="@{'/clearview/hotels/'+${hotel.id}+'/customers/form'}"><button class="btn btn-primary">New Customers</button></a></li>
+                <li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/clearview/logout}">Logout</a></li>
             </ul>
         </div>
     </div>
