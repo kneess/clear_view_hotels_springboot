@@ -56,6 +56,7 @@ public class EmployeesController {
             }
         }
 
+        //employee set active false for radio button checked
         Employee newEmployee = new Employee();
         newEmployee.setActive(false);
         model.addAttribute("hotel",hotel);
@@ -69,12 +70,12 @@ public class EmployeesController {
             ,@ModelAttribute("employee") @Valid Employee employee,
             BindingResult bindingResult, Model model, @RequestParam("managerId") Long managerId)
     {
-        // Todo: refactor this or move to service
         if(bindingResult.hasErrors())
         {
             log.warn(bindingResult.getAllErrors().toString());
             Hotel hotel = hotelService.getHotelById(hotelId);
             List<Employee> employees = hotel.getEmployees();
+            //get hotel managers to display in dropdown
             List<Employee> managers = new ArrayList<>();
             for(Employee e : employees)
             {
@@ -86,6 +87,8 @@ public class EmployeesController {
             model.addAttribute("managers",managers);
             return "newEmployeeForm";
         }
+        //check if username taken
+        //conflict because of Employee and Customer entity use with security auth
         if(userRepo.findByaUsername(employee.getEUsername()).isEmpty()) {
             //assigning employee a manager and a hotel
             Employee manager = employeeService.getEmployeeById(managerId);
@@ -100,6 +103,7 @@ public class EmployeesController {
 
         Hotel hotel = hotelService.getHotelById(hotelId);
         List<Employee> employees = hotel.getEmployees();
+        //get hotel managers to display in dropdown
         List<Employee> managers = new ArrayList<>();
         for(Employee e : employees)
         {

@@ -36,12 +36,14 @@
     <h3 style="text-align: center" th:text="${hotel.name} + ' New Employee Form'">Employee</h3>
         <form action="#" th:action="@{'/clearview/hotels/'+${hotel.id}+'/employees'}" th:object="${employee}" method="post">
             <div class="mb-3">
+                <!--        todo find out if this is ok-->
                 <label class="form-label">Username</label>
                 <input type="text" class="form-control" th:field="*{eUsername}">
                 <p th:if="${#fields.hasErrors('eUsername')}" th:errors="*{eUsername}" style="color: red">Can't be null</p>
                 <p th:if="${usernameExists}" style="color: red" th:text="${usernameExists}">Can't be null</p>
             </div>
             <div class="mb-3">
+                <!--        todo find out if this is ok-->
                 <label class="form-label">Temp Password</label>
                 <input type="text" class="form-control" th:field="*{ePassword}">
                 <p th:if="${#fields.hasErrors('ePassword')}" th:errors="*{ePassword}" style="color: red">Can't be null</p>

@@ -26,6 +26,7 @@ public class CustomerRoomController {
         this.customerService = customerService;
     }
 
+    //if customer(ROLE_CUSTOMER) logged in get username
     @GetMapping("/myroom/{username}")
     public String getMyRoom(@PathVariable("username") String username, Model model)
     {

@@ -61,12 +61,15 @@
                 <th scope="row" th:text="${customer.id}">1</th>
                 <th th:text="${customer.firstName}">1</th>
                 <td th:text="${customer.lastName}">Mark</td>
+<!--                admin can view customer details-->
                 <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${customer.email}">Mark</td>
                 <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${customer.phoneNumber}">Not Available</td>
                 <td th:text="${customer.hotel.id}">Available</td>
+<!--                new customer dont have a room assigned automatically: checking for room-->
                 <td th:text="${customer.room != null} ? ${customer.room.roomNumber} : 'Not Assigned'">Available</td>
                 <td th:text="${customer.room != null} ? ${customer.room.phoneNumber} : 'Not Available'">Available</td>
                 <td th:text="${customer.active}">Available</td>
+<!--                admin assign customer room-->
                 <td sec:authorize="hasRole('ROLE_ADMIN')" th:if="${customer.room == null and customer.active == true and hotel != null}"><a th:href="@{'/clearview/hotels/'+${hotel.id}+'/customers/'+${customer.id}+'/assignroom'}"><button class="btn btn-primary">Assign Room</button></a></td>
                 <td sec:authorize="hasRole('ROLE_ADMIN')" th:if="${customer.room != null and hotel != null}">Assigned</td>
                 <td sec:authorize="hasRole('ROLE_ADMIN')" th:if="${customer.active  == false and hotel != null}">Inactive</td>

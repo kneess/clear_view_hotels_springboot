@@ -54,6 +54,7 @@ public class Employee implements Serializable {
     @NonNull @NotNull
     Boolean active;
 
+    //needed constructor to add new employee to hotel
     public Employee(String firstname,String eUsername, String ePassword, String email, String address, String city, String state, String zip, String phoneNumber,
                     String title, Double salary, Employee employeeManager, Boolean active)
     {

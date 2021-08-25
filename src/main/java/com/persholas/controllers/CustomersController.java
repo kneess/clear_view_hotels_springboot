@@ -48,6 +48,7 @@ public class CustomersController {
     {
         Hotel hotel = hotelService.getHotelById(hotelId);
         Customer customer = new Customer();
+        // set active to false so thymeleaf form radio box checked
         customer.setActive(false);
         model.addAttribute("hotel",hotel);
         model.addAttribute("customer",customer);
@@ -64,12 +65,15 @@ public class CustomersController {
             log.warn(bindingResult.getAllErrors().toString());
             return "newCustomerForm";
         }
+        // check for username before creating customer
+        //conflict because of Employee and Customer entity use with security auth
         if(userRepo.findByaUsername(customer.getCUsername()).isEmpty()) {
             Customer newCustomer = customerService.addOrUpdateCustomer(customer);
             hotelService.addCustomerToHotel(hotelId, newCustomer);
             userRepo.save(new AuthGroup(newCustomer.getCUsername(), "ROLE_CUSTOMER"));
             return "redirect:/clearview/hotels/" + hotelId + "/customers";
         }
+        //send customer error to customer form if username
         String usernameExists = "Username already taken please enter in another";
         Hotel hotel = hotelService.getHotelById(hotelId);
         model.addAttribute("usernameExists",usernameExists);
@@ -82,6 +86,7 @@ public class CustomersController {
     public String assignCustomerToRoomForm(@PathVariable("hotelId") Long hotelId, @PathVariable("customerId") Long customerId,
             Model model)
     {
+        //get vacant rooms only before displaying available rooms to customer being assigned room
         Hotel hotel = hotelService.getHotelById(hotelId);
         Customer customer = customerService.getCustomerById(customerId);
         List<Room> rooms = hotel.getRooms();

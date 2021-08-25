@@ -35,6 +35,7 @@ public class HotelsController {
         return "hotels";
     }
 
+    //show hotel
     @GetMapping("/hotels/{id}")
     public String showHotel(@PathVariable("id") Long hotelId, Model model)
     {
@@ -45,6 +46,7 @@ public class HotelsController {
         return "hotel";
     }
 
+    //show hotel employees
     @GetMapping("/hotels/{id}/employees")
     public String showHotelEmployees(@PathVariable("id") Long hotelId, Model model)
     {
@@ -55,6 +57,7 @@ public class HotelsController {
         return "employees";
     }
 
+    //show hotel customers
     @GetMapping("/hotels/{id}/customers")
     public String showHotelCustomers(@PathVariable("id") Long hotelId, Model model)
     {

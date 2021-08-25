@@ -37,11 +37,13 @@
         <form action="#" th:action="@{'/clearview/hotels/'+${hotel.id}+'/customers'}" th:object="${customer}" method="post">
             <div class="mb-3">
                 <label class="form-label">Username</label>
+<!--                todo find out if this is ok-->
                 <input type="text" class="form-control" th:field="*{cUsername}">
                 <p th:if="${#fields.hasErrors('cUsername')}" th:errors="*{cUsername}" style="color: red">Can't be null</p>
                 <p th:if="${usernameExists}" style="color: red" th:text="${usernameExists}">Can't be null</p>
             </div>
             <div class="mb-3">
+                <!--        todo find out if this is ok-->
                 <label class="form-label">Temp Password</label>
                 <input type="text" class="form-control" th:field="*{cPassword}">
                 <p th:if="${#fields.hasErrors('cPassword')}" th:errors="*{cPassword}" style="color: red">Can't be null</p>

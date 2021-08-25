@@ -15,12 +15,14 @@ public class AppUserPrincipal implements UserDetails {
     private Customer customer;
     private List<AuthGroup> authGroups;
 
+    //auth for employee
     public AppUserPrincipal(Employee employee, List<AuthGroup> authGroups)
     {
         this.employee = employee;
         this.authGroups = authGroups;
     }
 
+    //auth for customer
     public AppUserPrincipal(Customer customer, List<AuthGroup> authGroups)
     {
         this.customer = customer;
