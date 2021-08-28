@@ -10,6 +10,7 @@ import com.persholas.services.EmployeeService;
 import com.persholas.services.HotelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -94,6 +95,10 @@ public class EmployeesController {
             Employee manager = employeeService.getEmployeeById(managerId);
             log.warn(manager.getId().toString());
             employee.setEmployeeManager(manager);
+            //encryting employee password
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(employee.getEPassword());
+            employee.setEPassword(encodedPassword);
             Employee employee1 = employeeService.addNewEmployee(employee);
             //setting employee role
             userRepo.save(new AuthGroup(employee.getEUsername(),"ROLE_EMPLOYEE"));

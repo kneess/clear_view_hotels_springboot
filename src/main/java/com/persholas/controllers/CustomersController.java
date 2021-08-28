@@ -8,6 +8,7 @@ import com.persholas.services.HotelService;
 import com.persholas.services.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,6 +69,10 @@ public class CustomersController {
         // check for username before creating customer
         //conflict because of Employee and Customer entity use with security auth
         if(userRepo.findByaUsername(customer.getCUsername()).isEmpty()) {
+            //encrypting customer password
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(customer.getCPassword());
+            customer.setCPassword(encodedPassword);
             Customer newCustomer = customerService.addOrUpdateCustomer(customer);
             hotelService.addCustomerToHotel(hotelId, newCustomer);
             userRepo.save(new AuthGroup(newCustomer.getCUsername(), "ROLE_CUSTOMER"));
