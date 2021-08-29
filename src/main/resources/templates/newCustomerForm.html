@@ -45,7 +45,7 @@
             <div class="mb-3">
                 <!--        todo find out if this is ok-->
                 <label class="form-label">Temp Password</label>
-                <input type="text" class="form-control" th:field="*{cPassword}">
+                <input type="password" class="form-control" th:field="*{cPassword}">
                 <p th:if="${#fields.hasErrors('cPassword')}" th:errors="*{cPassword}" style="color: red">Can't be null</p>
             </div>
             <div class="mb-3">
