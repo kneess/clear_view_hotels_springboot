@@ -1,7 +1,7 @@
 package com.persholas.controllers;
 
-import com.persholas.models.Customer;
-import com.persholas.models.Employee;
+import com.persholas.models.CustomerProfile;
+import com.persholas.models.EmployeeProfile;
 import com.persholas.models.Hotel;
 import com.persholas.models.Room;
 import com.persholas.services.HotelService;
@@ -51,7 +51,7 @@ public class HotelsController {
     public String showHotelEmployees(@PathVariable("id") Long hotelId, Model model)
     {
         Hotel foundHotel = hotelService.getHotelById(hotelId);
-        List<Employee> employees = foundHotel.getEmployees();
+        List<EmployeeProfile> employees = foundHotel.getEmployees();
         model.addAttribute("hotel",foundHotel);
         model.addAttribute("employees",employees);
         return "employees";
@@ -62,7 +62,7 @@ public class HotelsController {
     public String showHotelCustomers(@PathVariable("id") Long hotelId, Model model)
     {
         Hotel foundHotel = hotelService.getHotelById(hotelId);
-        List<Customer> customers = foundHotel.getCustomers();
+        List<CustomerProfile> customers = foundHotel.getCustomers();
         model.addAttribute("hotel",foundHotel);
         model.addAttribute("customers",customers);
         return "customers";

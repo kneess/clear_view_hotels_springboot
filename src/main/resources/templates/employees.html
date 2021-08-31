@@ -62,9 +62,9 @@
             <tbody>
             <tr th:each="employee : ${employees}"><a th:href="@{'/clearview/employees/'+${employee.id}}">
                 <th scope="row" th:text="${employee.id}">1</th>
-                <td th:text="${employee.firstName}">Room</td>
-                <td th:text="${employee.lastName}">Room</td>
-                <td th:text="${employee.email}">Room</td>
+                <td th:text="${employee.user.firstName}">Room</td>
+                <td th:text="${employee.user.lastName}">Room</td>
+                <td th:text="${employee.user.email}">Room</td>
                 <td th:text="${employee.address}">Room</td>
                 <td th:text="${employee.city}">Room</td>
                 <td th:text="${employee.state}">Room</td>

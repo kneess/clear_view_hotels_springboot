@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Entity
@@ -20,21 +19,23 @@ import java.io.Serializable;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "employees")
-public class Employee implements Serializable {
+public class EmployeeProfile implements Serializable {
     static final long serialVersionUID = 6381462249347345007L;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NonNull @Column(unique = true) @NotBlank
-    String eUsername;
-    @NonNull @NotBlank
-    String ePassword;
-    @NonNull @NotBlank(message = "Must enter in name")
-    String firstName;
-    @NonNull @NotBlank(message = "Must enter in last name")
-    String lastName;
-    @NonNull @Pattern(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", message = "Not a valid email")
-    String email;
+//    @NonNull @Column(unique = true) @NotBlank
+//    String eUsername;
+//    @NonNull @NotBlank
+//    String ePassword;
+//    @NonNull @NotBlank(message = "Must enter in name")
+//    String firstName;
+//    @NonNull @NotBlank(message = "Must enter in last name")
+//    String lastName;
+//    @NonNull @Pattern(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", message = "Not a valid email")
+//    String email;
+    @NonNull @OneToOne
+    User user;
     @NonNull @NotBlank(message = "Must enter in address")
     String address;
     @NonNull @NotBlank(message = "Must enter in city")
@@ -50,26 +51,26 @@ public class Employee implements Serializable {
     @NonNull @Min(value = 12000, message = "must be equal or greater than 12000")
     Double salary;
     @OneToOne
-    Employee employeeManager;
+    EmployeeProfile employeeManager;
     @NonNull @NotNull
     Boolean active;
 
     //needed constructor to add new employee to hotel
-    public Employee(String firstname,String eUsername, String ePassword, String email, String address, String city, String state, String zip, String phoneNumber,
-                    String title, Double salary, Employee employeeManager, Boolean active)
-    {
-        this.firstName = firstname;
-        this.eUsername = eUsername;
-        this.ePassword = ePassword;
-        this.email = email;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.zipCode = zip;
-        this.phoneNumber = phoneNumber;
-        this.title = title;
-        this.salary = salary;
-        this.employeeManager = employeeManager;
-        this.active = active;
-    }
+//    public Employee(String address, String city, String state, String zip, String phoneNumber,
+//                    String title, Double salary, Employee employeeManager, Boolean active)
+//    {
+//        this.firstName = firstname;
+//        this.eUsername = eUsername;
+//        this.ePassword = ePassword;
+//        this.email = email;
+//        this.address = address;
+//        this.city = city;
+//        this.state = state;
+//        this.zipCode = zip;
+//        this.phoneNumber = phoneNumber;
+//        this.title = title;
+//        this.salary = salary;
+//        this.employeeManager = employeeManager;
+//        this.active = active;
+//    }
 }

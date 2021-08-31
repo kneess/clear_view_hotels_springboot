@@ -32,9 +32,9 @@ public class Hotel {
     @NonNull
     String phoneNumber;
     @OneToMany
-    List<Employee> employees;
+    List<EmployeeProfile> employees;
     @OneToMany
-    List<Customer> customers;
+    List<CustomerProfile> customers;
     @OneToMany
     List<Room> rooms;
 }

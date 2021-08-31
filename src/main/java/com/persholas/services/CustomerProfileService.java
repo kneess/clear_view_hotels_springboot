@@ -1,7 +1,8 @@
 package com.persholas.services;
 
-import com.persholas.dao.ICustomerRepo;
-import com.persholas.models.Customer;
+import com.persholas.dao.ICustomerProfileRepo;
+import com.persholas.models.CustomerProfile;
+import com.persholas.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,35 +14,35 @@ import java.util.Optional;
 @Service
 @Slf4j
 @Transactional
-public class CustomerService {
+public class CustomerProfileService {
 
-    private ICustomerRepo customerRepo;
+    private ICustomerProfileRepo customerRepo;
 
     @Autowired
-    public CustomerService(ICustomerRepo customerRepo)
+    public CustomerProfileService(ICustomerProfileRepo customerRepo)
     {
         this.customerRepo = customerRepo;
     }
 
-    public List<Customer> getAllCustomers()
+    public List<CustomerProfile> getAllCustomers()
     {
         log.warn("CustomerService: Executing: getAllCustomers");
         return customerRepo.findAll();
     }
 
-    public Customer getCustomerById(Long id)
+    public CustomerProfile getCustomerById(Long id)
     {
         log.warn("CustomerService: Executing: getCustomerById");
         return customerRepo.getById(id);
     }
 
-    public Optional<Customer> getCustomerByUsername(String username)
-    {
-        return customerRepo.findBycUsername(username);
-    }
 
-    public Customer addOrUpdateCustomer(Customer customer)
+    public CustomerProfile addOrUpdateCustomer(CustomerProfile customer)
     {
         return customerRepo.save(customer);
+    }
+
+    public CustomerProfile getCustomerProfileByUser(Optional<User> user) {
+        return customerRepo.findByUser(user);
     }
 }

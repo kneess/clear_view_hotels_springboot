@@ -5,7 +5,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -30,7 +29,7 @@ public class Room {
     @NonNull
     String phoneNumber;
     @OneToOne
-    Customer customer;
+    CustomerProfile customer;
     @NonNull
     Boolean vacancy;
     @ManyToOne

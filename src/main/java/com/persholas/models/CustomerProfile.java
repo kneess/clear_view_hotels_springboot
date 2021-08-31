@@ -19,21 +19,23 @@ import java.io.Serializable;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "customers")
-public class Customer implements Serializable {
+public class CustomerProfile implements Serializable {
     static final long serialVersionUID = 6381462249347345007L;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NonNull @Column(unique = true) @NotBlank
-    String cUsername;
-    @NonNull @NotBlank
-    String cPassword;
-    @NonNull @NotBlank(message = "Must enter in first name")
-    String firstName;
-    @NonNull @NotBlank(message = "Must enter in last name")
-    String lastName;
-    @NonNull @Pattern(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", message = "Not a valid email")
-    String email;
+//    @NonNull @Column(unique = true) @NotBlank
+//    String cUsername;
+//    @NonNull @NotBlank
+//    String cPassword;
+//    @NonNull @NotBlank(message = "Must enter in first name")
+//    String firstName;
+//    @NonNull @NotBlank(message = "Must enter in last name")
+//    String lastName;
+//    @NonNull @Pattern(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", message = "Not a valid email")
+//
+    @NonNull @OneToOne
+    User user;
     @NonNull @NotBlank(message = "Must enter in phone number")
     String phoneNumber;
     @NonNull

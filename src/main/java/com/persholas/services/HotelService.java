@@ -1,8 +1,8 @@
 package com.persholas.services;
 
 import com.persholas.dao.IHotelRepo;
-import com.persholas.models.Customer;
-import com.persholas.models.Employee;
+import com.persholas.models.CustomerProfile;
+import com.persholas.models.EmployeeProfile;
 import com.persholas.models.Hotel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +34,18 @@ public class HotelService {
         return hotelRepo.getById(id);
     }
 
-    public void addEmployeeToHotel(Long hotelId, Employee employee)
+    public void addEmployeeToHotel(Long hotelId, EmployeeProfile employee)
     {
         Hotel hotel = getHotelById(hotelId);
-        List<Employee> employees = hotel.getEmployees();
+        List<EmployeeProfile> employees = hotel.getEmployees();
         employees.add(employee);
         hotel.setEmployees(employees);
         hotelRepo.save(hotel);
     }
-    public void addCustomerToHotel(Long hotelId, Customer customer)
+    public void addCustomerToHotel(Long hotelId, CustomerProfile customer)
     {
         Hotel hotel = getHotelById(hotelId);
-        List<Customer> customers = hotel.getCustomers();
+        List<CustomerProfile> customers = hotel.getCustomers();
         customers.add(customer);
         hotel.setCustomers(customers);
         customer.setHotel(hotel);

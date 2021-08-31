@@ -10,48 +10,54 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
 @Component
 @Transactional
 public class AppRunner implements CommandLineRunner {
-    IEmployeeRepo employeeRepo;
-    ICustomerRepo customerRepo;
+    IUserRepo userRepo;
+    IEmployeeProfileRepo employeeProfileRepo;
+    ICustomerProfileRepo customerProfileRepo;
     IHotelRepo hotelRepo;
     IRoomRepo roomRepo;
-    IAuthGroupRepo userRepo;
+    IAuthGroupRepo authGroupRepo;
 
     @Autowired
-    public AppRunner(IEmployeeRepo employeeRepo, IHotelRepo hotelRepo, ICustomerRepo customerRepo, IRoomRepo roomRepo
+    public AppRunner(IUserRepo userRepo, IEmployeeProfileRepo employeeRepo, IHotelRepo hotelRepo, ICustomerProfileRepo customerRepo, IRoomRepo roomRepo
     , IAuthGroupRepo authGroupRepo)
     {
-        this.employeeRepo = employeeRepo;
+        this.userRepo = userRepo;
+        this.employeeProfileRepo = employeeRepo;
         this.hotelRepo = hotelRepo;
-        this.customerRepo = customerRepo;
+        this.customerProfileRepo = customerRepo;
         this.roomRepo = roomRepo;
-        this.userRepo = authGroupRepo;
+        this.authGroupRepo = authGroupRepo;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        employeeRepo.save(new Employee("anibal","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Anibal","Lecter","anibal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Landlord",1000000.00, true));
-        employeeRepo.save(new Employee("jenny","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Jenny","Johnson","jenny@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Manager",55000.00,true));
-        employeeRepo.save(new Employee("michal","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Michal","Murray","michal@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
-        employeeRepo.save(new Employee("nemo","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Nemo","Nancy","nemo@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
-        employeeRepo.save(new Employee("dory","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Dory","Dan","dory@mail.com","999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
-        userRepo.save(new AuthGroup("anibal","ROLE_ADMIN"));
-        userRepo.save(new AuthGroup("jenny","ROLE_EMPLOYEE"));
-        userRepo.save(new AuthGroup("michal","ROLE_EMPLOYEE"));
-        userRepo.save(new AuthGroup("nemo","ROLE_EMPLOYEE"));
-        userRepo.save(new AuthGroup("dory","ROLE_EMPLOYEE"));
+        userRepo.save(new User("anibal@clearview.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Anibal","Lecter"));
+        userRepo.save(new User("jenny@clearview.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Jenny","Johnson"));
+        userRepo.save(new User("michal@clearview.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Michal","Murray"));
+        userRepo.save(new User("nemo@clearview.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Nemo","Nancy"));
+        userRepo.save(new User("dory@clearview.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Dory","Dan"));
+        authGroupRepo.save(new AuthGroup("anibal@clearview.com","ROLE_ADMIN"));
+        authGroupRepo.save(new AuthGroup("jenny@clearview.com","ROLE_EMPLOYEE"));
+        authGroupRepo.save(new AuthGroup("michal@clearview.com","ROLE_EMPLOYEE"));
+        authGroupRepo.save(new AuthGroup("nemo@clearview.com","ROLE_EMPLOYEE"));
+        authGroupRepo.save(new AuthGroup("dory@clearview.com","ROLE_EMPLOYEE"));
+        employeeProfileRepo.save(new EmployeeProfile(userRepo.getById(1L), "999 w grand ave","PHX","AZ","85001","459-999-9999","Landlord",1000000.00, true));
+        employeeProfileRepo.save(new EmployeeProfile(userRepo.getById(2L),"999 w grand ave","PHX","AZ","85001","459-999-9999","Manager",55000.00,true));
+        employeeProfileRepo.save(new EmployeeProfile(userRepo.getById(3L),"999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeProfileRepo.save(new EmployeeProfile(userRepo.getById(4L),"999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
+        employeeProfileRepo.save(new EmployeeProfile(userRepo.getById(5L),"999 w grand ave","PHX","AZ","85001","459-999-9999","Maintenance",32000.00,true));
 
-        Employee landlord = employeeRepo.getById(1l);
-        Employee manager = employeeRepo.getById(2l);
-        Employee maintenance_one = employeeRepo.getById(3l);
-        Employee maintenance_two = employeeRepo.getById(4l);
-        Employee maintenance_three = employeeRepo.getById(5l);
+        EmployeeProfile landlord = employeeProfileRepo.getById(1l);
+        EmployeeProfile manager = employeeProfileRepo.getById(2l);
+        EmployeeProfile maintenance_one = employeeProfileRepo.getById(3l);
+        EmployeeProfile maintenance_two = employeeProfileRepo.getById(4l);
+        EmployeeProfile maintenance_three = employeeProfileRepo.getById(5l);
         //set employee manager
         manager.setEmployeeManager(landlord);
         landlord.setEmployeeManager(landlord);
@@ -59,7 +65,7 @@ public class AppRunner implements CommandLineRunner {
         maintenance_two.setEmployeeManager(manager);
         maintenance_three.setEmployeeManager(manager);
 
-        List<Employee> hEmps = new ArrayList<>();
+        List<EmployeeProfile> hEmps = new ArrayList<>();
         hEmps.add(landlord);
         hEmps.add(manager);
         hEmps.add(maintenance_one);
@@ -70,17 +76,21 @@ public class AppRunner implements CommandLineRunner {
         Hotel nHotel = hotelRepo.getById(1l);
         nHotel.setEmployees(hEmps);
         //create customer
-        customerRepo.save(new Customer("jeremy","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Jeremy","John","jmy@mail.com","808-000-0000",true));
-        customerRepo.save(new Customer("rachel","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Rachel","Randy","rachel@mail.com","808-000-0000",true));
-        customerRepo.save(new Customer("arnold","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Arnold","Ashley","arnold@mail.com","808-000-0000",true));
-        userRepo.save(new AuthGroup("jeremy","ROLE_CUSTOMER"));
-        userRepo.save(new AuthGroup("rachel","ROLE_CUSTOMER"));
-        userRepo.save(new AuthGroup("arnold","ROLE_CUSTOMER"));
+        userRepo.save(new User("jmy@mail.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Jeremy","John"));
+        userRepo.save(new User("rachel@mail.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Rachel","Randy"));
+        userRepo.save(new User("arnold@mail.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Arnold","Ashley"));
+        authGroupRepo.save(new AuthGroup("jeremy","ROLE_CUSTOMER"));
+        authGroupRepo.save(new AuthGroup("rachel","ROLE_CUSTOMER"));
+        authGroupRepo.save(new AuthGroup("arnold","ROLE_CUSTOMER"));
+        customerProfileRepo.save(new CustomerProfile(userRepo.getById(6L), "808-000-0000",true));
+        customerProfileRepo.save(new CustomerProfile(userRepo.getById(7L),"808-000-0000",true));
+        customerProfileRepo.save(new CustomerProfile(userRepo.getById(8L),"808-000-0000",true));
+
         //get customer
-        List<Customer> customers = new ArrayList<>();
-        Customer customer1 = customerRepo.getById(1l);
-        Customer customer2 = customerRepo.getById(2l);
-        Customer customer3 = customerRepo.getById(3l);
+        List<CustomerProfile> customers = new ArrayList<>();
+        CustomerProfile customer1 = customerProfileRepo.getById(1l);
+        CustomerProfile customer2 = customerProfileRepo.getById(2l);
+        CustomerProfile customer3 = customerProfileRepo.getById(3l);
         customer1.setHotel(nHotel);
         customer2.setHotel(nHotel);
         customer3.setHotel(nHotel);

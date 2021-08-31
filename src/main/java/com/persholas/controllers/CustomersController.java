@@ -2,8 +2,7 @@ package com.persholas.controllers;
 
 import com.persholas.dao.IAuthGroupRepo;
 import com.persholas.models.*;
-import com.persholas.services.CustomerService;
-import com.persholas.services.EmployeeService;
+import com.persholas.services.CustomerProfileService;
 import com.persholas.services.HotelService;
 import com.persholas.services.RoomService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,23 +22,23 @@ import java.util.List;
 @RequestMapping("clearview")
 public class CustomersController {
 
-    CustomerService customerService;
+    CustomerProfileService customerService;
     HotelService hotelService;
     RoomService roomService;
-    IAuthGroupRepo userRepo;
+    IAuthGroupRepo authGroupRepo;
     @Autowired
-    public CustomersController(CustomerService customerService, HotelService hotelService,RoomService roomService,IAuthGroupRepo userRepo)
+    public CustomersController(CustomerProfileService customerService, HotelService hotelService, RoomService roomService, IAuthGroupRepo userRepo)
     {
         this.customerService = customerService;
         this.hotelService = hotelService;
         this.roomService = roomService;
-        this.userRepo = userRepo;
+        this.authGroupRepo = userRepo;
     }
 
     @GetMapping("/customers")
     public String customers(Model model)
     {
-        List<Customer> customers = customerService.getAllCustomers();
+        List<CustomerProfile> customers = customerService.getAllCustomers();
         model.addAttribute("customers",customers);
         return "customers";
     }
@@ -48,7 +47,7 @@ public class CustomersController {
     public String customerForm(@PathVariable("hotelId") Long hotelId, Model model)
     {
         Hotel hotel = hotelService.getHotelById(hotelId);
-        Customer customer = new Customer();
+        CustomerProfile customer = new CustomerProfile();
         // set active to false so thymeleaf form radio box checked
         customer.setActive(false);
         model.addAttribute("hotel",hotel);
@@ -58,7 +57,7 @@ public class CustomersController {
 
     @PostMapping("/hotels/{hotelId}/customers")
     public String addCustomer(@PathVariable("hotelId") Long hotelId
-            , @ModelAttribute("customer") @Valid Customer customer,
+            , @ModelAttribute("customer") @Valid CustomerProfile customer,
                             BindingResult bindingResult,Model model)
     {
         if(bindingResult.hasErrors())
@@ -68,14 +67,14 @@ public class CustomersController {
         }
         // check for username before creating customer
         //conflict because of Employee and Customer entity use with security auth
-        if(userRepo.findByaUsername(customer.getCUsername()).isEmpty()) {
+        if(authGroupRepo.findByaUsername(customer.getUser().getEmail()).isEmpty()) {
             //encrypting customer password
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode(customer.getCPassword());
-            customer.setCPassword(encodedPassword);
-            Customer newCustomer = customerService.addOrUpdateCustomer(customer);
+            String encodedPassword = passwordEncoder.encode(customer.getUser().getUPassword());
+            customer.getUser().setUPassword(encodedPassword);
+            CustomerProfile newCustomer = customerService.addOrUpdateCustomer(customer);
             hotelService.addCustomerToHotel(hotelId, newCustomer);
-            userRepo.save(new AuthGroup(newCustomer.getCUsername(), "ROLE_CUSTOMER"));
+            authGroupRepo.save(new AuthGroup(newCustomer.getUser().getEmail(), "ROLE_CUSTOMER"));
             return "redirect:/clearview/hotels/" + hotelId + "/customers";
         }
         //send customer error to customer form if username
@@ -93,7 +92,7 @@ public class CustomersController {
     {
         //get vacant rooms only before displaying available rooms to customer being assigned room
         Hotel hotel = hotelService.getHotelById(hotelId);
-        Customer customer = customerService.getCustomerById(customerId);
+        CustomerProfile customer = customerService.getCustomerById(customerId);
         List<Room> rooms = hotel.getRooms();
         List<Room> vacantRooms = new ArrayList<>();
         for(Room r : rooms)
@@ -112,7 +111,7 @@ public class CustomersController {
     public String assiningRoom(@PathVariable("customerId") Long customerId,@PathVariable("hotelId") Long hotelId
             , @RequestParam("roomId") Long roomId)
     {
-        Customer customer = customerService.getCustomerById(customerId);
+        CustomerProfile customer = customerService.getCustomerById(customerId);
         Room room = roomService.assignCustomerToRoom(roomId,customer);
         customer.setRoom(room);
         customerService.addOrUpdateCustomer(customer);

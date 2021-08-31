@@ -1,7 +1,7 @@
 package com.persholas.services;
 
 import com.persholas.dao.IRoomRepo;
-import com.persholas.models.Customer;
+import com.persholas.models.CustomerProfile;
 import com.persholas.models.Room;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class RoomService {
         return roomRepo.getById(id);
     }
 
-    public Room assignCustomerToRoom(Long roomId, Customer customer)
+    public Room assignCustomerToRoom(Long roomId, CustomerProfile customer)
     {
         Room room = roomRepo.getById(roomId);
         room.setCustomer(customer);

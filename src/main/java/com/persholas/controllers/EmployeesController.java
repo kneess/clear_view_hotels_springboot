@@ -1,12 +1,12 @@
 package com.persholas.controllers;
 
 import com.persholas.dao.IAuthGroupRepo;
-import com.persholas.dao.IHotelRepo;
+import com.persholas.dao.IUserRepo;
 import com.persholas.models.AuthGroup;
-import com.persholas.models.Customer;
-import com.persholas.models.Employee;
+import com.persholas.models.EmployeeProfile;
 import com.persholas.models.Hotel;
-import com.persholas.services.EmployeeService;
+import com.persholas.models.User;
+import com.persholas.services.EmployeeProfileService;
 import com.persholas.services.HotelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,21 +25,24 @@ import java.util.List;
 @RequestMapping("clearview")
 public class EmployeesController {
 
-    EmployeeService employeeService;
+    EmployeeProfileService employeeService;
     HotelService hotelService;
-    IAuthGroupRepo userRepo;
+    IAuthGroupRepo authGroupRepo;
+    IUserRepo userRepo;
     @Autowired
-    public EmployeesController(EmployeeService employeeService,HotelService hotelService,IAuthGroupRepo userRepo)
+    public EmployeesController(EmployeeProfileService employeeService, HotelService hotelService,
+                               IAuthGroupRepo authGroupRepo,IUserRepo userRepo)
     {
         this.employeeService = employeeService;
         this.hotelService = hotelService;
+        this.authGroupRepo = authGroupRepo;
         this.userRepo = userRepo;
     }
 
     @GetMapping("/employees")
     public String employees(Model model)
     {
-        List<Employee> employees = employeeService.getAllEmployees();
+        List<EmployeeProfile> employees = employeeService.getAllEmployeeProfiles();
         model.addAttribute("employees",employees);
         return "employees";
     }
@@ -48,9 +51,9 @@ public class EmployeesController {
     public String employeeForm(@PathVariable("hotelId") Long hotelId, Model model)
     {
         Hotel hotel = hotelService.getHotelById(hotelId);
-        List<Employee> employees = hotel.getEmployees();
-        List<Employee> managers = new ArrayList<>();
-        for(Employee e : employees)
+        List<EmployeeProfile> employees = hotel.getEmployees();
+        List<EmployeeProfile> managers = new ArrayList<>();
+        for(EmployeeProfile e : employees)
         {
             if(e.getTitle().compareTo("Manager") == 0){
                 managers.add(employeeService.getEmployeeById(e.getId()));
@@ -58,27 +61,30 @@ public class EmployeesController {
         }
 
         //employee set active false for radio button checked
-        Employee newEmployee = new Employee();
-        newEmployee.setActive(false);
+        EmployeeProfile newEmployeeProfile = new EmployeeProfile();
+        User newUser = new User();
+        newEmployeeProfile.setActive(false);
         model.addAttribute("hotel",hotel);
-        model.addAttribute("employee",newEmployee);
+        model.addAttribute("user", newUser);
+        model.addAttribute("employee",newEmployeeProfile);
         model.addAttribute("managers",managers);
         return "newEmployeeForm";
     }
 
     @PostMapping("/hotels/{hotelId}/employees")
     public String addEmployee(@PathVariable("hotelId") Long hotelId
-            ,@ModelAttribute("employee") @Valid Employee employee,
-            BindingResult bindingResult, Model model, @RequestParam("managerId") Long managerId)
+            ,@ModelAttribute("user")@Valid User user, BindingResult bindingResultUser
+            ,@ModelAttribute("employee") @Valid EmployeeProfile employeeProfile,BindingResult bindingResultEmployeeProfile,
+             Model model, @RequestParam("managerId") Long managerId)
     {
-        if(bindingResult.hasErrors())
+        if(bindingResultEmployeeProfile.hasErrors() || bindingResultUser.hasErrors())
         {
-            log.warn(bindingResult.getAllErrors().toString());
+            log.warn(bindingResultEmployeeProfile.getAllErrors().toString());
             Hotel hotel = hotelService.getHotelById(hotelId);
-            List<Employee> employees = hotel.getEmployees();
+            List<EmployeeProfile> employees = hotel.getEmployees();
             //get hotel managers to display in dropdown
-            List<Employee> managers = new ArrayList<>();
-            for(Employee e : employees)
+            List<EmployeeProfile> managers = new ArrayList<>();
+            for(EmployeeProfile e : employees)
             {
                 if(e.getTitle().compareTo("Manager") == 0){
                     managers.add(e);
@@ -88,35 +94,35 @@ public class EmployeesController {
             model.addAttribute("managers",managers);
             return "newEmployeeForm";
         }
-        //check if username taken
-        //conflict because of Employee and Customer entity use with security auth
-        if(userRepo.findByaUsername(employee.getEUsername()).isEmpty()) {
-            //assigning employee a manager and a hotel
-            Employee manager = employeeService.getEmployeeById(managerId);
-            log.warn(manager.getId().toString());
-            employee.setEmployeeManager(manager);
-            //encryting employee password
+        //check if email taken
+        if(authGroupRepo.findByaUsername(user.getEmail()).isEmpty()) {
+            //encryting employeeProfile password
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode(employee.getEPassword());
-            employee.setEPassword(encodedPassword);
-            Employee employee1 = employeeService.addNewEmployee(employee);
-            //setting employee role
-            userRepo.save(new AuthGroup(employee.getEUsername(),"ROLE_EMPLOYEE"));
+            String encodedPassword = passwordEncoder.encode(user.getUPassword());
+            user.setUPassword(encodedPassword);
+            User newUser = userRepo.save(user);
+            authGroupRepo.save(new AuthGroup(newUser.getEmail(),"ROLE_EMPLOYEE"));
+            //assigning employeeProfile a manager and a hotel
+            EmployeeProfile manager = employeeService.getEmployeeById(managerId);
+            log.warn(manager.getId().toString());
+            employeeProfile.setEmployeeManager(manager);
+            employeeProfile.setUser(newUser);
+            EmployeeProfile employee1 = employeeService.addNewEmployeeProfile(employeeProfile);
             hotelService.addEmployeeToHotel(hotelId, employee1);
             return "redirect:/clearview/hotels/" + hotelId + "/employees";
         }
 
         Hotel hotel = hotelService.getHotelById(hotelId);
-        List<Employee> employees = hotel.getEmployees();
+        List<EmployeeProfile> employees = hotel.getEmployees();
         //get hotel managers to display in dropdown
-        List<Employee> managers = new ArrayList<>();
-        for(Employee e : employees)
+        List<EmployeeProfile> managers = new ArrayList<>();
+        for(EmployeeProfile e : employees)
         {
             if(e.getTitle().compareTo("Manager") == 0){
                 managers.add(e);
             }
         }
-        String usernameExists = "Username already taken please enter in another";
+        String usernameExists = "email already exists in our database";
         model.addAttribute("usernameExists",usernameExists);
         model.addAttribute("hotel",hotel);
         model.addAttribute("managers",managers);

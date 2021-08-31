@@ -1,8 +1,7 @@
 package com.persholas.security;
 
 import com.persholas.models.AuthGroup;
-import com.persholas.models.Customer;
-import com.persholas.models.Employee;
+import com.persholas.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,23 +10,31 @@ import java.util.*;
 
 public class AppUserPrincipal implements UserDetails {
 
-    private Employee employee;
-    private Customer customer;
+//    private Employee employee;
+//    private Customer customer;
+    private User user;
     private List<AuthGroup> authGroups;
 
     //auth for employee
-    public AppUserPrincipal(Employee employee, List<AuthGroup> authGroups)
+    public AppUserPrincipal(User user, List<AuthGroup> authGroups)
     {
-        this.employee = employee;
+        this.user = user;
         this.authGroups = authGroups;
     }
 
-    //auth for customer
-    public AppUserPrincipal(Customer customer, List<AuthGroup> authGroups)
-    {
-        this.customer = customer;
-        this.authGroups = authGroups;
-    }
+//    //auth for employee
+//    public AppUserPrincipal(Employee employee, List<AuthGroup> authGroups)
+//    {
+//        this.employee = employee;
+//        this.authGroups = authGroups;
+//    }
+
+//    //auth for customer
+//    public AppUserPrincipal(Customer customer, List<AuthGroup> authGroups)
+//    {
+//        this.customer = customer;
+//        this.authGroups = authGroups;
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -44,19 +51,30 @@ public class AppUserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        if(this.employee != null){
-            return this.employee.getEPassword();
-        }
-        return  this.customer.getCPassword();
+        return this.user.getUPassword();
     }
 
     @Override
     public String getUsername() {
-        if(this.employee != null){
-            return this.employee.getEUsername();
-        }
-        return  this.customer.getCUsername();
+        return this.user.getEmail();
     }
+
+
+//    @Override
+//    public String getPassword() {
+//        if(this.employee != null){
+//            return this.employee.getEPassword();
+//        }
+//        return  this.customer.getCPassword();
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        if(this.employee != null){
+//            return this.employee.getEUsername();
+//        }
+//        return  this.customer.getCUsername();
+//    }
 
     @Override
     public boolean isAccountNonExpired() {
