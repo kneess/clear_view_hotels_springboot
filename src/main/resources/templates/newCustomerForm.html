@@ -19,7 +19,7 @@
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/clearview/home}">ClearView</a>
+        <a class="navbar-brand" th:href="@{/clearview/home}"><b><i>ClearView</i></b><span sec:authorize="isAuthenticated()" th:text="':  Welcome, '+${#authentication.principal.firstName}"></span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -35,38 +35,35 @@
     <div class="mt-5">
     <h3 style="text-align: center" th:text="${hotel.name} + ' New Customer Form'">Customer</h3>
         <form action="#" th:action="@{'/clearview/hotels/'+${hotel.id}+'/customers'}" th:object="${customer}" method="post">
-            <div class="mb-3">
-                <label class="form-label">Username</label>
-<!--                todo find out if this is ok-->
-                <input type="text" class="form-control" th:field="*{cUsername}">
-                <p th:if="${#fields.hasErrors('cUsername')}" th:errors="*{cUsername}" style="color: red">Can't be null</p>
-                <p th:if="${usernameExists}" style="color: red" th:text="${usernameExists}">Can't be null</p>
-            </div>
-            <div class="mb-3">
-                <!--        todo find out if this is ok-->
-                <label class="form-label">Temp Password</label>
-                <input type="password" class="form-control" th:field="*{cPassword}">
-                <p th:if="${#fields.hasErrors('cPassword')}" th:errors="*{cPassword}" style="color: red">Can't be null</p>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">First Name</label>
-                <input type="text" class="form-control" th:field="*{firstName}">
-                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color: red">Can't be null</p>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Last Name</label>
-                <input type="text" class="form-control" th:field="*{lastName}">
-                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color: red">Can't be null</p>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" th:field="*{email}">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red">Can't be null</p>
+            <div th:object="${user}">
+                <div class="mb-3">
+                    <!--        todo find out if this is ok-->
+                    <label class="form-label">Temp Password</label>
+                    <input type="password" class="form-control" th:field="*{UPassword}">
+                    <p th:if="${#fields.hasErrors('UPassword')}" th:errors="*{UPassword}" style="color: red">Can't be null</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-control" th:field="*{firstName}">
+                    <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color: red">Can't be null</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-control" th:field="*{lastName}">
+                    <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color: red">Can't be null</p>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" th:field="*{email}">
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red">Can't be null</p>
+                    <p th:if="${usernameExists}" style="color: red" th:text="${usernameExists}">Can't be null</p>
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Phone Number</label>
                 <input type="text" class="form-control" th:field="*{phoneNumber}">
+                <div class="form-text">Format: 000-000-0000</div>
                 <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" style="color: red">Can't be null</p>
             </div>
             <div class="mb-3">

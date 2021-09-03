@@ -59,7 +59,9 @@ public class AppUserPrincipal implements UserDetails {
         return this.user.getEmail();
     }
 
+    public String getFirstName() { return this.user.getFirstName(); }
 
+    public Long getUserId() { return this.user.getUserId(); }
 //    @Override
 //    public String getPassword() {
 //        if(this.employee != null){

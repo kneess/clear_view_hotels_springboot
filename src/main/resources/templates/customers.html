@@ -19,7 +19,7 @@
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/clearview/home}">ClearView</a>
+        <a class="navbar-brand" th:href="@{/clearview/home}"><b><i>ClearView</i></b><span sec:authorize="isAuthenticated()" th:text="':  Welcome, '+${#authentication.principal.firstName}"></span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -59,10 +59,10 @@
             <tbody>
             <tr th:each="customer : ${customers}">
                 <th scope="row" th:text="${customer.id}">1</th>
-                <th th:text="${customer.firstName}">1</th>
-                <td th:text="${customer.lastName}">Mark</td>
+                <th th:text="${customer.user.firstName}">1</th>
+                <td th:text="${customer.user.lastName}">Mark</td>
 <!--                admin can view customer details-->
-                <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${customer.email}">Mark</td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${customer.user.email}">Mark</td>
                 <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${customer.phoneNumber}">Not Available</td>
                 <td th:text="${customer.hotel.id}">Available</td>
 <!--                new customer dont have a room assigned automatically: checking for room-->

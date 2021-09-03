@@ -23,15 +23,15 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequestMapping("clearview")
-public class EmployeesController {
+public class EmployeesProfileController {
 
     EmployeeProfileService employeeService;
     HotelService hotelService;
     IAuthGroupRepo authGroupRepo;
     IUserRepo userRepo;
     @Autowired
-    public EmployeesController(EmployeeProfileService employeeService, HotelService hotelService,
-                               IAuthGroupRepo authGroupRepo,IUserRepo userRepo)
+    public EmployeesProfileController(EmployeeProfileService employeeService, HotelService hotelService,
+                                      IAuthGroupRepo authGroupRepo, IUserRepo userRepo)
     {
         this.employeeService = employeeService;
         this.hotelService = hotelService;
@@ -55,7 +55,7 @@ public class EmployeesController {
         List<EmployeeProfile> managers = new ArrayList<>();
         for(EmployeeProfile e : employees)
         {
-            if(e.getTitle().compareTo("Manager") == 0){
+            if(e.getTitle().toLowerCase().compareTo("manager") == 0 || e.getTitle().toLowerCase().compareTo("landlord") == 0){
                 managers.add(employeeService.getEmployeeById(e.getId()));
             }
         }
@@ -77,16 +77,21 @@ public class EmployeesController {
             ,@ModelAttribute("employee") @Valid EmployeeProfile employeeProfile,BindingResult bindingResultEmployeeProfile,
              Model model, @RequestParam("managerId") Long managerId)
     {
+        //set up email to company email
+        String companyEmail = user.getFirstName().toLowerCase() + "."+user.getLastName().toLowerCase()+"@clearview.com";
+        user.setEmail(companyEmail);
+        //pass as attributes
+        Hotel hotel = hotelService.getHotelById(hotelId);
+        List<EmployeeProfile> employees = hotel.getEmployees();
+
         if(bindingResultEmployeeProfile.hasErrors() || bindingResultUser.hasErrors())
         {
             log.warn(bindingResultEmployeeProfile.getAllErrors().toString());
-            Hotel hotel = hotelService.getHotelById(hotelId);
-            List<EmployeeProfile> employees = hotel.getEmployees();
             //get hotel managers to display in dropdown
             List<EmployeeProfile> managers = new ArrayList<>();
             for(EmployeeProfile e : employees)
             {
-                if(e.getTitle().compareTo("Manager") == 0){
+                if(e.getTitle().toLowerCase().compareTo("manager") == 0 || e.getTitle().toLowerCase().compareTo("landlord") == 0){
                     managers.add(e);
                 }
             }
@@ -111,9 +116,6 @@ public class EmployeesController {
             hotelService.addEmployeeToHotel(hotelId, employee1);
             return "redirect:/clearview/hotels/" + hotelId + "/employees";
         }
-
-        Hotel hotel = hotelService.getHotelById(hotelId);
-        List<EmployeeProfile> employees = hotel.getEmployees();
         //get hotel managers to display in dropdown
         List<EmployeeProfile> managers = new ArrayList<>();
         for(EmployeeProfile e : employees)

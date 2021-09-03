@@ -79,9 +79,9 @@ public class AppRunner implements CommandLineRunner {
         userRepo.save(new User("jmy@mail.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Jeremy","John"));
         userRepo.save(new User("rachel@mail.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Rachel","Randy"));
         userRepo.save(new User("arnold@mail.com","$2y$11$JcGGFLmi46mM4SKUGKSv8.2srUTueRcyxRoHfHSVK/voHjw9kEKv.","Arnold","Ashley"));
-        authGroupRepo.save(new AuthGroup("jeremy","ROLE_CUSTOMER"));
-        authGroupRepo.save(new AuthGroup("rachel","ROLE_CUSTOMER"));
-        authGroupRepo.save(new AuthGroup("arnold","ROLE_CUSTOMER"));
+        authGroupRepo.save(new AuthGroup("jmy@mail.com","ROLE_CUSTOMER"));
+        authGroupRepo.save(new AuthGroup("rachel@mail.com","ROLE_CUSTOMER"));
+        authGroupRepo.save(new AuthGroup("arnold@mail.com","ROLE_CUSTOMER"));
         customerProfileRepo.save(new CustomerProfile(userRepo.getById(6L), "808-000-0000",true));
         customerProfileRepo.save(new CustomerProfile(userRepo.getById(7L),"808-000-0000",true));
         customerProfileRepo.save(new CustomerProfile(userRepo.getById(8L),"808-000-0000",true));

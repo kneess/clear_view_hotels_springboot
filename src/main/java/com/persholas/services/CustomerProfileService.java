@@ -9,40 +9,39 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
 @Transactional
 public class CustomerProfileService {
 
-    private ICustomerProfileRepo customerRepo;
+    private ICustomerProfileRepo customerProfileRepo;
 
     @Autowired
     public CustomerProfileService(ICustomerProfileRepo customerRepo)
     {
-        this.customerRepo = customerRepo;
+        this.customerProfileRepo = customerRepo;
     }
 
     public List<CustomerProfile> getAllCustomers()
     {
         log.warn("CustomerService: Executing: getAllCustomers");
-        return customerRepo.findAll();
+        return customerProfileRepo.findAll();
     }
 
     public CustomerProfile getCustomerById(Long id)
     {
         log.warn("CustomerService: Executing: getCustomerById");
-        return customerRepo.getById(id);
+        return customerProfileRepo.getById(id);
     }
 
 
     public CustomerProfile addOrUpdateCustomer(CustomerProfile customer)
     {
-        return customerRepo.save(customer);
+        return customerProfileRepo.save(customer);
     }
 
-    public CustomerProfile getCustomerProfileByUser(Optional<User> user) {
-        return customerRepo.findByUser(user);
+    public CustomerProfile getCustomerProfileByUser(User user) {
+        return customerProfileRepo.findByUser(user);
     }
 }

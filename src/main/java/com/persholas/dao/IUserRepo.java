@@ -9,5 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepo extends JpaRepository<User, Long> {
+    //needed for spring security
     Optional<User> findByEmail(String email);
 }

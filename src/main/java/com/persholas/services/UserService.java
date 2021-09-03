@@ -18,8 +18,8 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public Optional<User> getUserByEmail(String email)
+    public User getUserById(Long id)
     {
-        return userRepo.findByEmail(email);
+        return userRepo.getById(id);
     }
 }

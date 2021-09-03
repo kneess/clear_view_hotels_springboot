@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Entity
@@ -44,7 +45,7 @@ public class EmployeeProfile implements Serializable {
     String state;
     @NonNull @NotBlank(message = "Must enter in zip code")
     String zipCode;
-    @NonNull @NotBlank(message = "Must enter in phone number")
+    @NonNull @Pattern(regexp ="[0-9]{3}-[0-9]{3}-[0-9]{4}", message = "Please follow the format")
     String phoneNumber;
     @NonNull @NotBlank(message = "Must enter in title")
     String title;

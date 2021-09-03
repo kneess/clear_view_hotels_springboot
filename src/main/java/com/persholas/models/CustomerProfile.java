@@ -36,7 +36,7 @@ public class CustomerProfile implements Serializable {
 //
     @NonNull @OneToOne
     User user;
-    @NonNull @NotBlank(message = "Must enter in phone number")
+    @NonNull @Pattern(regexp ="[0-9]{3}-[0-9]{3}-[0-9]{4}", message = "Please follow the format")
     String phoneNumber;
     @NonNull
     Boolean active;

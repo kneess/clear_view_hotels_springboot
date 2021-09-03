@@ -20,7 +20,7 @@
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/clearview/home}">ClearView</a>
+        <a class="navbar-brand" th:href="@{/clearview/home}"><b><i>ClearView</i></b><span sec:authorize="isAuthenticated()" th:text="':  Welcome, '+${#authentication.principal.firstName}"></span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -43,8 +43,8 @@
                         <img src="/imgs/pic.jpg" class="card-img-top" alt="...">
 
                         <div class="card-body" style="text-align: center">
-                            <h5 class="card-title" th:text="${customer.firstName} + ' '+ ${customer.lastName}">Card title</h5>
-                            <p class="card-text" th:text="${customer.email}">Quick</p>
+                            <h5 class="card-title" th:text="${customer.user.firstName} + ' '+ ${customer.user.lastName}">Card title</h5>
+                            <p class="card-text" th:text="${customer.user.email}">Quick</p>
                             <p class="card-text" th:text="${customer.phoneNumber}">Quick</p>
                         </div>
                     </div>

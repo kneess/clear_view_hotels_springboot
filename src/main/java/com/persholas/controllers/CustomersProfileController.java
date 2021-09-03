@@ -1,6 +1,7 @@
 package com.persholas.controllers;
 
 import com.persholas.dao.IAuthGroupRepo;
+import com.persholas.dao.IUserRepo;
 import com.persholas.models.*;
 import com.persholas.services.CustomerProfileService;
 import com.persholas.services.HotelService;
@@ -20,19 +21,22 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequestMapping("clearview")
-public class CustomersController {
+public class CustomersProfileController {
 
     CustomerProfileService customerService;
     HotelService hotelService;
     RoomService roomService;
     IAuthGroupRepo authGroupRepo;
+    IUserRepo userRepo;
     @Autowired
-    public CustomersController(CustomerProfileService customerService, HotelService hotelService, RoomService roomService, IAuthGroupRepo userRepo)
+    public CustomersProfileController(CustomerProfileService customerService, HotelService hotelService,
+                                      RoomService roomService, IAuthGroupRepo authGroupRepo, IUserRepo userRepo)
     {
         this.customerService = customerService;
         this.hotelService = hotelService;
         this.roomService = roomService;
-        this.authGroupRepo = userRepo;
+        this.authGroupRepo = authGroupRepo;
+        this.userRepo = userRepo;
     }
 
     @GetMapping("/customers")
@@ -49,40 +53,49 @@ public class CustomersController {
         Hotel hotel = hotelService.getHotelById(hotelId);
         CustomerProfile customer = new CustomerProfile();
         // set active to false so thymeleaf form radio box checked
+        User newUser = new User();
         customer.setActive(false);
         model.addAttribute("hotel",hotel);
+        model.addAttribute("user",newUser);
         model.addAttribute("customer",customer);
         return "newCustomerForm";
     }
 
     @PostMapping("/hotels/{hotelId}/customers")
     public String addCustomer(@PathVariable("hotelId") Long hotelId
-            , @ModelAttribute("customer") @Valid CustomerProfile customer,
-                            BindingResult bindingResult,Model model)
+            , @ModelAttribute("customer") @Valid CustomerProfile customerProfile,
+                            BindingResult bindingResultCustomerProfile,
+                              @ModelAttribute("user") @Valid User user,
+                              BindingResult bindingResultUser,Model model)
     {
-        if(bindingResult.hasErrors())
+        //pass as attribute
+        Hotel hotel = hotelService.getHotelById(hotelId);
+
+        if(bindingResultCustomerProfile.hasErrors() || bindingResultUser.hasErrors())
         {
-            log.warn(bindingResult.getAllErrors().toString());
+            model.addAttribute("hotel",hotel);
             return "newCustomerForm";
         }
-        // check for username before creating customer
+        // check for username before creating customerProfile
         //conflict because of Employee and Customer entity use with security auth
-        if(authGroupRepo.findByaUsername(customer.getUser().getEmail()).isEmpty()) {
-            //encrypting customer password
+        if(authGroupRepo.findByaUsername(user.getEmail()).isEmpty()) {
+
+            authGroupRepo.save(new AuthGroup(user.getEmail(), "ROLE_CUSTOMER"));
+            //encrypting customerProfile password
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode(customer.getUser().getUPassword());
-            customer.getUser().setUPassword(encodedPassword);
-            CustomerProfile newCustomer = customerService.addOrUpdateCustomer(customer);
+            String encodedPassword = passwordEncoder.encode(user.getUPassword());
+            user.setUPassword(encodedPassword);
+            User newUser = userRepo.save(user);
+            customerProfile.setUser(newUser);
+            CustomerProfile newCustomer = customerService.addOrUpdateCustomer(customerProfile);
             hotelService.addCustomerToHotel(hotelId, newCustomer);
-            authGroupRepo.save(new AuthGroup(newCustomer.getUser().getEmail(), "ROLE_CUSTOMER"));
             return "redirect:/clearview/hotels/" + hotelId + "/customers";
         }
-        //send customer error to customer form if username
-        String usernameExists = "Username already taken please enter in another";
-        Hotel hotel = hotelService.getHotelById(hotelId);
+        //send customerProfile error to customerProfile form if username
+        String usernameExists = "Email is already in our database";
         model.addAttribute("usernameExists",usernameExists);
         model.addAttribute("hotel",hotel);
-        model.addAttribute("customer",customer);
+        model.addAttribute("customer",customerProfile);
         return "newCustomerForm";
     }
 

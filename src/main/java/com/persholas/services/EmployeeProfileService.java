@@ -15,31 +15,31 @@ import java.util.List;
 @Transactional
 public class EmployeeProfileService {
 
-    private IEmployeeProfileRepo employeeRepo;
+    private IEmployeeProfileRepo employeeProfileRepo;
 
     @Autowired
     public EmployeeProfileService(IEmployeeProfileRepo employeeRepo)
     {
-        this.employeeRepo = employeeRepo;
+        this.employeeProfileRepo = employeeRepo;
     }
 
     public List<EmployeeProfile> getAllEmployeeProfiles()
     {
-        return employeeRepo.findAll();
+        return employeeProfileRepo.findAll();
     }
 
     public EmployeeProfile getEmployeeById(Long id)
     {
-        return employeeRepo.getById(id);
+        return employeeProfileRepo.getById(id);
     }
 
     public EmployeeProfile getEmployeeByUser(User user)
     {
-        return employeeRepo.getByUser(user);
+        return employeeProfileRepo.getByUser(user);
     }
 
     public EmployeeProfile addNewEmployeeProfile(EmployeeProfile employee)
     {
-        return employeeRepo.save(employee);
+        return employeeProfileRepo.save(employee);
     }
 }

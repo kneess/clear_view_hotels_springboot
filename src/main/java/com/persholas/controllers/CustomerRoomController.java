@@ -27,10 +27,10 @@ public class CustomerRoomController {
     }
 
     //if customer(ROLE_CUSTOMER) logged in get username
-    @GetMapping("/myroom/{email}")
-    public String getMyRoom(@PathVariable("email") String email, Model model)
+    @GetMapping("/myroom/{userId}")
+    public String getMyRoom(@PathVariable("userId") Long userId, Model model)
     {
-        CustomerProfile optionalCustomer = customerService.getCustomerProfileByUser(userService.getUserByEmail(email));
+        CustomerProfile optionalCustomer = customerService.getCustomerProfileByUser(userService.getUserById(userId));
 //        CustomerProfile customer = optionalCustomer.get();
         model.addAttribute("customer",optionalCustomer);
 
