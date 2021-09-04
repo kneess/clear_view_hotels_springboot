@@ -1,8 +1,10 @@
 package com.persholas.controllers;
 
 import com.persholas.dao.IAuthGroupRepo;
+import com.persholas.dao.ICustomerProfileRepo;
 import com.persholas.dao.IUserRepo;
 import com.persholas.models.AuthGroup;
+import com.persholas.models.CustomerProfile;
 import com.persholas.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,14 @@ public class HomeController {
 
     IUserRepo userRepo;
     IAuthGroupRepo authGroupRepo;
+    ICustomerProfileRepo customerProfileRepo;
 
     @Autowired
-    public HomeController(IUserRepo userRepo, IAuthGroupRepo authGroupRepo)
+    public HomeController(IUserRepo userRepo, IAuthGroupRepo authGroupRepo, ICustomerProfileRepo customerProfileRepo)
     {
         this.userRepo = userRepo;
         this.authGroupRepo = authGroupRepo;
+        this.customerProfileRepo = customerProfileRepo;
     }
 
     @GetMapping({"/","/home"})
@@ -48,16 +52,20 @@ public class HomeController {
     public String signup(Model model)
     {
         User newUser = new User();
+        CustomerProfile newProfile = new CustomerProfile();
+        newProfile.setActive(true);
         model.addAttribute("user",newUser);
+        model.addAttribute("cProfile", newProfile);
         return "signup";
     }
 
     @PostMapping("/signup")
-    public String postSignup(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+    public String postSignup(@ModelAttribute("user") @Valid User user, BindingResult bindingResultUser,
+                             @ModelAttribute("cProfile") @Valid CustomerProfile cProfile, BindingResult bindingResultcProfile,
                              Model model)
     {
         log.warn(user.toString());
-        if(bindingResult.hasErrors())
+        if(bindingResultUser.hasErrors() || bindingResultcProfile.hasErrors())
         {
             return "signup";
         }
@@ -68,7 +76,9 @@ public class HomeController {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String encodedPass = encoder.encode(user.getUPassword());
             user.setUPassword(encodedPass);
-            userRepo.save(user);
+            User newUser = userRepo.save(user);
+            cProfile.setUser(newUser);
+            customerProfileRepo.save(cProfile);
             return "home";
         }
 

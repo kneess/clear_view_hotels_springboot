@@ -56,6 +56,15 @@
                     <input type="password" class="form-control" th:field="*{UPassword}">
                     <p th:if="${#fields.hasErrors('UPassword')}" th:errors="*{UPassword}" style="color: red">Can't be null</p>
                 </div>
+
+                <div th:object="${cProfile}">
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" th:field="*{phoneNumber}">
+                        <div class="form-text">Format: 000-000-0000</div>
+                        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" style="color: red">Can't be null</p>
+                    </div>
+                </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

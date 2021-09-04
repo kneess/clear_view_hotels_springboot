@@ -68,8 +68,9 @@
 
             <div class="col-8" style="border: solid; background-color: #e3f2fd" th:if="${customer.room == null}">
                 <br>
-                <h3>No room assigned to book a room please call the number below or go to our helpdesk for more info:</h3>
-                <h3 th:text="${customer.hotel.name} + ': '+${customer.hotel.phoneNumber}"></h3>
+                <h3 th:if="${customer.hotel != null}">No room assigned to book a room please call the number below or go to our helpdesk for more info:</h3>
+                <h3 th:if="${customer.hotel != null}" th:text="${customer.hotel.name} + ': '+${customer.hotel.phoneNumber}"></h3>
+                <h3 th:if="${customer.hotel == null}">Check out our catalog of hotels and rooms or go to your nearest location to book a room.</h3>
             </div>
 <!--            end of myRoomRow-->
         </div>
