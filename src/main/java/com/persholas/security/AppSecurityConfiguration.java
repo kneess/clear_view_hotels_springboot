@@ -51,6 +51,7 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/clearview/employees/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/clearview/customers/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/clearview/home").hasAnyAuthority("ROLE_ADMIN","ROLE_EMPLOYEE","ROLE_CUSTOMER")
+                .antMatchers("/clearview/signup").permitAll()
                 .antMatchers("/clearview/").permitAll()
                 .anyRequest().authenticated()
                 .and()
