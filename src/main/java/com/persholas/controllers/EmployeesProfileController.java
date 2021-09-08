@@ -29,6 +29,7 @@ public class EmployeesProfileController {
     HotelService hotelService;
     IAuthGroupRepo authGroupRepo;
     IUserRepo userRepo;
+
     @Autowired
     public EmployeesProfileController(EmployeeProfileService employeeService, HotelService hotelService,
                                       IAuthGroupRepo authGroupRepo, IUserRepo userRepo)
@@ -39,6 +40,7 @@ public class EmployeesProfileController {
         this.userRepo = userRepo;
     }
 
+    //ROLE_ADMIN has access
     @GetMapping("/employees")
     public String employees(Model model)
     {
@@ -47,6 +49,8 @@ public class EmployeesProfileController {
         return "employees";
     }
 
+    //ROLE_ADMIN has access
+    //Employee form
     @GetMapping("/hotels/{hotelId}/employees/form")
     public String employeeForm(@PathVariable("hotelId") Long hotelId, Model model)
     {
@@ -71,6 +75,8 @@ public class EmployeesProfileController {
         return "newEmployeeForm";
     }
 
+    //ROLE_ADMIN has access
+    //Adding employee
     @PostMapping("/hotels/{hotelId}/employees")
     public String addEmployee(@PathVariable("hotelId") Long hotelId
             ,@ModelAttribute("user")@Valid User user, BindingResult bindingResultUser
@@ -101,16 +107,18 @@ public class EmployeesProfileController {
         }
         //check if email taken
         if(authGroupRepo.findByaUsername(user.getEmail()).isEmpty()) {
-            //encryting employeeProfile password
+            //encrypt employeeProfile password
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encodedPassword = passwordEncoder.encode(user.getUPassword());
             user.setUPassword(encodedPassword);
+            //save new user
             User newUser = userRepo.save(user);
+            //set email to ROLE_EMPLOYEE authgroup
             authGroupRepo.save(new AuthGroup(newUser.getEmail(),"ROLE_EMPLOYEE"));
             //assigning employeeProfile a manager and a hotel
             EmployeeProfile manager = employeeService.getEmployeeById(managerId);
-            log.warn(manager.getId().toString());
             employeeProfile.setEmployeeManager(manager);
+            //setting user to employee profile
             employeeProfile.setUser(newUser);
             EmployeeProfile employee1 = employeeService.addNewEmployeeProfile(employeeProfile);
             hotelService.addEmployeeToHotel(hotelId, employee1);
@@ -124,6 +132,7 @@ public class EmployeesProfileController {
                 managers.add(e);
             }
         }
+        //if email taken send message to form
         String usernameExists = "email already exists in our database";
         model.addAttribute("usernameExists",usernameExists);
         model.addAttribute("hotel",hotel);

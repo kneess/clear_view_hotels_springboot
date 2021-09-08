@@ -21,12 +21,15 @@ import java.util.List;
 public class HotelsController {
 
     HotelService hotelService;
+
     @Autowired
     public HotelsController(HotelService hotelService)
     {
         this.hotelService = hotelService;
     }
 
+    //ROLE_ADMIN, ROLE_CUSTOMER has access
+    //show all hotels
     @GetMapping("/hotels")
     public String hotels(Model model)
     {
@@ -35,6 +38,7 @@ public class HotelsController {
         return "hotels";
     }
 
+    //ROLE_ADMIN, ROLE_CUSTOMER has access
     //show hotel
     @GetMapping("/hotels/{id}")
     public String showHotel(@PathVariable("id") Long hotelId, Model model)
@@ -46,6 +50,7 @@ public class HotelsController {
         return "hotel";
     }
 
+    //ROLE_ADMIN has access
     //show hotel employees
     @GetMapping("/hotels/{id}/employees")
     public String showHotelEmployees(@PathVariable("id") Long hotelId, Model model)
@@ -57,6 +62,7 @@ public class HotelsController {
         return "employees";
     }
 
+    //ROLE_ADMIN, ROLE_CUSTOMER has access
     //show hotel customers
     @GetMapping("/hotels/{id}/customers")
     public String showHotelCustomers(@PathVariable("id") Long hotelId, Model model)

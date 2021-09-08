@@ -10,31 +10,14 @@ import java.util.*;
 
 public class AppUserPrincipal implements UserDetails {
 
-//    private Employee employee;
-//    private Customer customer;
     private User user;
     private List<AuthGroup> authGroups;
 
-    //auth for employee
     public AppUserPrincipal(User user, List<AuthGroup> authGroups)
     {
         this.user = user;
         this.authGroups = authGroups;
     }
-
-//    //auth for employee
-//    public AppUserPrincipal(Employee employee, List<AuthGroup> authGroups)
-//    {
-//        this.employee = employee;
-//        this.authGroups = authGroups;
-//    }
-
-//    //auth for customer
-//    public AppUserPrincipal(Customer customer, List<AuthGroup> authGroups)
-//    {
-//        this.customer = customer;
-//        this.authGroups = authGroups;
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -58,25 +41,10 @@ public class AppUserPrincipal implements UserDetails {
     public String getUsername() {
         return this.user.getEmail();
     }
-
+    // method needed to get user first name on the front end
     public String getFirstName() { return this.user.getFirstName(); }
-
+    // method needed to get user id on the front end
     public Long getUserId() { return this.user.getUserId(); }
-//    @Override
-//    public String getPassword() {
-//        if(this.employee != null){
-//            return this.employee.getEPassword();
-//        }
-//        return  this.customer.getCPassword();
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        if(this.employee != null){
-//            return this.employee.getEUsername();
-//        }
-//        return  this.customer.getCUsername();
-//    }
 
     @Override
     public boolean isAccountNonExpired() {

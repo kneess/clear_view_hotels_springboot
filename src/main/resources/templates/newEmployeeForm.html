@@ -37,7 +37,6 @@
         <form action="#" th:action="@{'/clearview/hotels/'+${hotel.id}+'/employees'}" th:object="${employee}" method="post">
             <div th:object="${user}">
             <div class="mb-3">
-                <!--        todo find out if this is ok-->
                 <label class="form-label">Temp Password</label>
                 <input type="password" class="form-control" th:field="*{UPassword}">
                 <p th:if="${#fields.hasErrors('UPassword')}" th:errors="*{UPassword}" style="color: red">Can't be null</p>

@@ -64,7 +64,8 @@
 <!--                admin can view customer details-->
                 <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${customer.user.email}">Mark</td>
                 <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${customer.phoneNumber}">Not Available</td>
-                <td th:text="${customer.hotel.id}">Available</td>
+                <td th:if="${customer.hotel != null}" th:text="${customer.hotel.id}">Available</td>
+                <td th:if="${customer.hotel == null}">Not Available</td>
 <!--                new customer dont have a room assigned automatically: checking for room-->
                 <td th:text="${customer.room != null} ? ${customer.room.roomNumber} : 'Not Assigned'">Available</td>
                 <td th:text="${customer.room != null} ? ${customer.room.phoneNumber} : 'Not Available'">Available</td>

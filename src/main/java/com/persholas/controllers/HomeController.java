@@ -64,12 +64,12 @@ public class HomeController {
                              @ModelAttribute("cProfile") @Valid CustomerProfile cProfile, BindingResult bindingResultcProfile,
                              Model model)
     {
-        log.warn(user.toString());
+
         if(bindingResultUser.hasErrors() || bindingResultcProfile.hasErrors())
         {
             return "signup";
         }
-
+        //checking if user email taken before creating new user
         if(authGroupRepo.findByaUsername(user.getEmail()).isEmpty())
         {
             authGroupRepo.save(new AuthGroup(user.getEmail(), "ROLE_CUSTOMER"));
@@ -81,7 +81,7 @@ public class HomeController {
             customerProfileRepo.save(cProfile);
             return "home";
         }
-
+        //if user email is taken return message
         String usernameExists = "Email is already in our database";
         model.addAttribute("usernameExists",usernameExists);
         return "signup";

@@ -26,12 +26,11 @@ public class CustomerRoomController {
         this.userService = userService;
     }
 
-    //if customer(ROLE_CUSTOMER) logged in get username
+    //if customer(ROLE_CUSTOMER) logged in get customer profile
     @GetMapping("/myroom/{userId}")
     public String getMyRoom(@PathVariable("userId") Long userId, Model model)
     {
         CustomerProfile optionalCustomer = customerService.getCustomerProfileByUser(userService.getUserById(userId));
-//        CustomerProfile customer = optionalCustomer.get();
         model.addAttribute("customer",optionalCustomer);
 
         return "customerRoom";

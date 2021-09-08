@@ -37,6 +37,7 @@
     <div class="text-center mt-5">
         <h3>All Hotels</h3>
             <table class="table table-striped table-hover">
+<!--                table head-->
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -49,6 +50,7 @@
                     <th scope="col">Details</th>
                 </tr>
                 </thead>
+<!--                table body-->
                 <tbody>
                 <tr th:each="hotel : ${hotels}">
                     <th scope="row" th:text="${hotel.id}">1</th>
