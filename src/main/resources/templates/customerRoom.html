@@ -71,6 +71,7 @@
                 <h3 th:if="${customer.hotel != null}">No room assigned to book a room please call the number below or go to our helpdesk for more info:</h3>
                 <h3 th:if="${customer.hotel != null}" th:text="${customer.hotel.name} + ': '+${customer.hotel.phoneNumber}"></h3>
                 <h3 th:if="${customer.hotel == null}">Check out our catalog of hotels and rooms or go to your nearest location to book a room.</h3>
+                <a th:href="@{'/clearview/myroom/'+ ${#authentication.principal.userId} + '/catalog'}"><h4 th:if="${customer.hotel == null}">Catalog</h4></a>
             </div>
 <!--            end of myRoomRow-->
         </div>
