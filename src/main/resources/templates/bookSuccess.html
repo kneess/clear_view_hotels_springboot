@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org http://www.thymeleaf.org
+  http://www.ultraq.net.nz/thymeleaf/layout http://www.ultraq.net.nz/thymeleaf/layout
+  http://www.thymeleaf.org/thymeleaf-extras-springsecurity4 http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>ClearView Hotels Homepage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/clearview/}"><b><i>ClearView</i></b><span sec:authorize="isAuthenticated()" th:text="':  Welcome, '+${#authentication.principal.firstName}"></span></a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" th:href="@{/clearview/home}">Home</a></li>
+
+                <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/clearview/hotels}">Hotels</a></li>
+                </div>
+
+                <div sec:authorize="hasRole('ROLE_CUSTOMER')">
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/clearview/myroom/'+ ${#authentication.principal.userId}}">My Room</a></li>
+                </div>
+
+                <div sec:authorize="isAuthenticated()">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/clearview/logout}">Logout</a></li>
+                </div>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Page content-->
+<div class="container">
+    <div class="text-center mt-5">
+        <h2 class="display-1">Room Booked Successfully!</h2>
+    </div>
+    <div sec:authorize="hasRole('ROLE_CUSTOMER')" class="text-center mt-5">
+        <a th:href="@{'/clearview/myroom/'+ ${#authentication.principal.userId} }"><button class="btn btn-primary">Go to room</button></a>
+    </div>
+</div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
