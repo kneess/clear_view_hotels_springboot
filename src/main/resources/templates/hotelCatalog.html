@@ -47,6 +47,7 @@
                 <th scope="col">City</th>
                 <th scope="col">State</th>
                 <th scope="col">Zip</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <!--                table body-->
@@ -59,6 +60,7 @@
                 <td th:text="${hotel.city}">Not Available</td>
                 <td th:text="${hotel.state}">Not Available</td>
                 <td th:text="${hotel.zipCode}">Not Available</td>
+                <td><a th:href="@{'/clearview/myroom/'+${#authentication.principal.userId} + '/catalog/'+${hotel.id} }"><button class="btn btn-primary">View Rooms</button></a></td>
             </tr>
             </tbody>
         </table>
